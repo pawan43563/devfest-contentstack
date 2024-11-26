@@ -3,12 +3,14 @@ import { Response } from 'express';
 import { AudioAnalysisService } from '../services/audio.analysis.service';
 import { VideoAnalysisService } from '../services/video.analysis.service';
 import { MultipartInterceptor } from 'frameworks/middlewares/interceptors/multipart';
+import { ChatAnalysisService } from 'src/services/chat.analysis.service';
 
 @Controller('/feedback')
 export class FeedbackController {
   constructor(
     private readonly videoAnalysisService: VideoAnalysisService,
     private readonly audioAnalysisService: AudioAnalysisService,
+    private readonly chatAnalysisService: ChatAnalysisService,
   ) {}
 
   @Post(['/visual', '/video'])
@@ -34,5 +36,17 @@ export class FeedbackController {
     const audioFeedback =
       await this.audioAnalysisService.analyzeAudio(audioPath);
     return response.status(200).send(audioFeedback);
+  }
+
+
+  // THIS IS FOR CHAT COMPLETION WHICH WILL CHECK KNOWLEDGE BASE AND RETURN THE RESOLUTION
+  @Post('/chat')
+  async getChatResolution(
+    @Res() response: Response,
+    @Body() body: any,
+  ): Promise<any> {
+    const chatFeedback =
+      await this.chatAnalysisService.extractData(body);
+    return response.status(200).send(chatFeedback);
   }
 }

@@ -4,7 +4,7 @@ import { AudioAnalysisService } from './services/audio.analysis.service';
 import { ConfigModule } from '@nestjs/config';
 import { VideoAnalysisService } from './services/video.analysis.service';
 import { ChatGPTService } from './services/gpt.service';
-import { moduleConfig } from 'frameworks/utils/config/env';
+import { ChatAnalysisService } from './services/chat.analysis.service';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -12,6 +12,6 @@ import { moduleConfig } from 'frameworks/utils/config/env';
     envFilePath: '.env'
   })],
   controllers: [FeedbackController],
-  providers: [VideoAnalysisService, AudioAnalysisService, ChatGPTService],
+  providers: [VideoAnalysisService, AudioAnalysisService, ChatGPTService, ChatAnalysisService],
 })
 export class AppModule {}

@@ -1,0 +1,2 @@
+Q. Big commerce app selector page is not working data is not getting added?
+A. make sure to add the products
