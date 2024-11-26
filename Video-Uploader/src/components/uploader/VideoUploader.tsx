@@ -7,7 +7,8 @@ const VideoUploader = () => {
   const [audioFeedback, setAudioFeedback] = useState("");
   const [loading, setLoading] = useState(0);
   const [statusText, setStatusText] = useState("Processing...");
-  const [thumbnail, setThumbnail] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setThumbnail] = useState<string | null>(null);
 
   useEffect(() => {
     let statusInterval: NodeJS.Timeout;

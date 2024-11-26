@@ -1,38 +1,4 @@
-import React from 'react'
 
-const themes = [
-    "default",
-    "light",
-    "synthwave",
-    // "cupcake",
-    "bumblebee",
-    "emerald",
-    "cyberpunk",
-    "retro",
-    "valentine",
-    "aqua",
-    "halloween",
-    "garden",
-    "forest",
-    "lofi",
-    "pastel",
-    "fantasy",
-    "wireframe",
-    "black",
-    "luxury",
-    "dracula",
-    "cmyk",
-    "autumn",
-    "business",
-    "acid",
-    "lemonade",
-    "night",
-    "coffee",
-    "winter",
-    "dim",
-    "nord",
-    "sunset",
-];
 
 const Header = () => {
     return (
