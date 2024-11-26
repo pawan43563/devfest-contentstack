@@ -18,7 +18,7 @@ const CONTENTSTACK_ORIGINS = [
     if (CONTENTSTACK_ORIGINS.includes(url.origin)) {
       await chrome.sidePanel.setOptions({
         tabId,
-        path: "sidepanel.html",
+        path: "index.html",
         enabled: true,
       });
     } else {
