@@ -52,15 +52,11 @@ export class ChatAnalysisService {
     try {
       const messages = [
         {
-          role: 'system',
-          content: audioFeedbackPrompt,
-        },
-        {
           role: 'user',
           content: [
             {
               type: 'text',
-              text: `Based on the context provided: ${KBResponse}, please analyze the following information: ${JSON.stringify(body)} and provide a detailed solution with step by step only when it is present inside the knowledge base else jsut return NOT FOUND.`,
+              text: `Based on the context provided: ${KBResponse}, please analyze the following information: ${JSON.stringify(body)} and provide a detailed solution with step by step only when it is present inside the context else just return NOT FOUND.`,
             },
           ],
         },
