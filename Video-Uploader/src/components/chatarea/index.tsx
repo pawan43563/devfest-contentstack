@@ -19,7 +19,7 @@ function ChatArea() {
   const videoFeedbackCall = async (formData: any) => {
     try {
       //   setLoading(20);
-      fetch("http://localhost:3000/feedback/visual", {
+      fetch("http://localhost:3000/feedback/visual?userId=user123", {
         method: "POST",
         body: formData,
       })
@@ -44,7 +44,7 @@ function ChatArea() {
   const audioFeedbackCall = async (formData: any) => {
     try {
       //   setLoading(20);
-      fetch("http://localhost:3000/feedback/audio", {
+      fetch("http://localhost:3000/feedback/audio?userId=user123", {
         method: "POST",
         body: formData,
       })
