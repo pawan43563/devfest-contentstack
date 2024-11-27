@@ -2,10 +2,19 @@ import React, { useEffect, useState } from "react";
 import VideoUploader from "../uploader/VideoUploader";
 import "./styles.css";
 
+const labelOptions = [
+  "Marketplace App",
+  "Launch",
+  "Automate"
+]
+
 function ChatArea() {
   const [videoFeedback, setVideoFeedback] = useState("");
   const [audioFeedback, setAudioFeedback] = useState("");
   const [formData, setFormData] = useState(new FormData());
+  const [Label, setLabel] = useState<Array<any>>([]);
+  const [labelBoolean, setLabelBoolean] = useState<boolean>(false);
+  const [labelCorrect, setLabelCorrect] = useState<boolean>(false);
 
   const videoFeedbackCall = async (formData: any) => {
     try {
@@ -48,6 +57,7 @@ function ChatArea() {
           //   setLoading(100);
           setAudioFeedback(data as string);
           console.log("Response data:", data);
+          setLabelBoolean(true);
         })
         .catch((err) => {
           console.log("Error:", err);
@@ -68,6 +78,15 @@ function ChatArea() {
 
   useEffect(() => {
     console.log(videoFeedback, audioFeedback);
+    const regex = /(?<=Label:\s).*/;
+    const audioLabel: any = audioFeedback.match(regex);
+    const videoLabel: any = videoFeedback.match(regex);
+
+    if (labelOptions?.includes(audioLabel?.[0])){
+      setLabel(audioLabel?.[0]);
+    } else if (labelOptions?.includes(videoLabel?.[0])) {
+      setLabel(videoLabel?.[0]);
+    } 
   }, [videoFeedback, audioFeedback]);
 
   function sendVideoAndAudio(): void {
@@ -211,6 +230,10 @@ function ChatArea() {
     });
   };
 
+  const handleLabelChange = (event: any) => {
+    setLabel(event.target.value);
+  };
+
   return (
     <>
       <div className="container">
@@ -241,6 +264,27 @@ function ChatArea() {
                 apps, IoT devices, and more.
               </p>
             </div>
+          </div>
+          <div className="label__container">
+            {
+              labelBoolean && (
+                <div className="message user-message">
+                  <p>Is the fetched label correct?</p>
+                  <button onClick={() => setLabelCorrect(true)}>Yes</button>
+                  <button onClick={() => setLabelCorrect(false)}>No</button>
+                  {!labelCorrect && (
+                    <select onChange={handleLabelChange}>
+                      <option value="">Select a label</option>
+                      {labelOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </div>
+              )
+            }
           </div>
           <div className="ticket-preview">
             <button className="jira-preview-button" onClick={handleOpenOverlay}>
