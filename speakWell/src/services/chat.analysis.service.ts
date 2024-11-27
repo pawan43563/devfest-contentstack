@@ -40,6 +40,7 @@ export class ChatAnalysisService {
       KBResponse = readFileSync(filePath, 'utf-8');
     } else {
       // ----- here KBResponse param is empty ??
+      // add the source from documentation link
       KBResponse = await this.analyzeWithGPT35(KBResponse, body.summary);
     }
 

@@ -4,6 +4,7 @@ import {
   Body,
   HttpException,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import * as fs from 'fs/promises';
 import { existsSync } from 'fs';
@@ -34,9 +35,12 @@ export class JiraController {
   }
 
   @Post('create-ticket')
-  async createTicket(@Body() ticketDetails: any): Promise<any> {
+  async createTicket(
+    @Body() ticketDetails: any,
+    @Query('userId') userId: string,
+  ): Promise<any> {
     try {
-      const userId = ticketDetails.userId ?? '123';
+      //   const userId = ticketDetails.userId ?? '123';
       const filePath = `./chat_data/feedback_${userId}.json`;
       const result = await this.jiraService.createTicket(ticketDetails);
       await this.appendToJsonFile(filePath, 'jira_ticket', result);
@@ -48,6 +52,34 @@ export class JiraController {
       throw new HttpException(
         {
           message: 'Failed to create Jira ticket',
+          error: error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Post('status-webhook')
+  async statusWebhook(
+    @Query('issueId') issueId: string,
+    @Query('issueKey') issueKey: string,
+    @Query('projectKey') projectKey: string,
+  ): Promise<any> {
+    if (!issueId || !issueKey) {
+      throw new HttpException(
+        { message: 'ticketId and key are required query parameters' },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    try {
+      const ticketDetails = await this.jiraService.getTicketDetails(issueKey);
+      console.info('ticketDetails', ticketDetails);
+      //   return ticketDetails;
+    } catch (error) {
+      throw new HttpException(
+        {
+          message: 'Failed to fetch ticket details',
           error: error.message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,

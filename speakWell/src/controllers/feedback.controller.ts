@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Post, Query, Res, UseInterceptors } from '@nestjs/common';
 import { Response } from 'express';
 import * as fs from 'fs/promises';
 import { existsSync } from 'fs';
@@ -40,8 +40,9 @@ export class FeedbackController {
   async getVisualFeedBack(
     @Res() response: Response,
     @Body() body: any,
+    @Query('userId') userId: string,
   ): Promise<any> {
-    const userId = body.userId ?? '123';
+    // const userId = body.userId ?? '123';
     const filePath = `./chat_data/feedback_${userId}.json`;
 
     await this.videoAnalysisService.extractFrames(body.path);
@@ -58,8 +59,9 @@ export class FeedbackController {
   async getAudioFeedBack(
     @Res() response: Response,
     @Body() body: any,
+    @Query('userId') userId: string,
   ): Promise<any> {
-    const userId = body.userId ?? '123';
+    // const userId = body.userId ?? '123';
     const filePath = `./chat_data/feedback_${userId}.json`;
 
     const audioPath = await this.audioAnalysisService.extractAudioFromVideo(
@@ -78,8 +80,9 @@ export class FeedbackController {
   async getChatResolution(
     @Res() response: Response,
     @Body() body: any,
+    @Query('userId') userId: string,
   ): Promise<any> {
-    const userId = body.userId ?? '123';
+    // const userId = body.userId ?? '123';
     const filePath = `./chat_data/feedback_${userId}.json`;
     const chatFeedback = await this.chatAnalysisService.extractData(body);
     await this.appendToJsonFile(filePath, 'chatFeedback', chatFeedback);

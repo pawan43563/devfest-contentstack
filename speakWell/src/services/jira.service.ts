@@ -51,4 +51,27 @@ export class JiraService {
       );
     }
   }
+
+  async getTicketDetails(ticketId: string): Promise<any> {
+    const url = `${this.baseUrl}/rest/api/2/issue/${ticketId}`;
+    const auth = Buffer.from(`${this.email}:${this.apiToken}`).toString('base64');
+  
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Basic ${auth}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw new HttpException(
+        {
+          message: 'Failed to fetch ticket details',
+          error: error.response?.data || error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
