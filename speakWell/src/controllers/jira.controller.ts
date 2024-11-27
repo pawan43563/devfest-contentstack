@@ -5,6 +5,7 @@ import {
   HttpException,
   HttpStatus,
   Query,
+  Get,
 } from '@nestjs/common';
 import * as fs from 'fs/promises';
 import { existsSync } from 'fs';
@@ -32,6 +33,24 @@ export class JiraController {
     jsonData[key] = data;
     // Write back to the file
     await fs.writeFile(filePath, JSON.stringify(jsonData, null, 2), 'utf8');
+  }
+
+  @Get('get-ticket-summary')
+  async getTicketSummary(@Query('userId') userId: string): Promise<any> {
+    try {
+      const ticketDetails = await this.jiraService.getTicketSummary(userId);
+      return {
+        ticket: ticketDetails,
+      };
+    } catch (error) {
+      throw new HttpException(
+        {
+          message: 'Failed to get details for the Jira ticket',
+          error: error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Post('create-ticket')

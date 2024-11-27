@@ -1,6 +1,7 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
+import { readFileSync } from 'fs';
 
 @Injectable()
 export class JiraService {
@@ -12,6 +13,14 @@ export class JiraService {
     this.baseUrl = this.configService.get<string>('JIRA_API_BASE_URL');
     this.email = this.configService.get<string>('JIRA_API_EMAIL');
     this.apiToken = this.configService.get<string>('JIRA_API_TOKEN');
+  }
+
+  async getTicketSummary(userId: string): Promise<any> {
+    const filePath = `./chat_data/feedback_${userId}.json`;
+    const fileContent = readFileSync(filePath, 'utf8');
+    const jsonData = JSON.parse(fileContent);
+    const ticketDetails = jsonData?.audioFeedback;
+    return ticketDetails;
   }
 
   async createTicket(ticketDetails: any): Promise<any> {
