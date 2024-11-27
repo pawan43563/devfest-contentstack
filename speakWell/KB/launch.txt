@@ -83,3 +83,68 @@ A. We have a few options that the you can choose from.
     1.Password protection - Our customers most commonly use this feature to secure their lower environments. The security of this approach is proportional to how strong your password is.
     2. SSO via edge functions - Ensures that only authenticated users can access the site by integrating with existing identity providers.
     3.IP Whitelisting - Allow only listed IPs to access your website. This option is currently not available on UI and can be enabled for you if required.
+
+Q. Will my site have downtime for new deployments?
+A. No. Your last successful deployment will remain active until it is replaced by a subsequent successful deployment. However, redeploying your site will clear the CDN cache for your site, so previously cached pages will be served as uncached requests the first time they are accessed.
+
+Q. Does Launch support custom domains?
+A. Yes. Custom domains may be added and configured in each environment’s settings.
+
+Q. Does Launch support serverless functions?
+A. Yes. Launch deploys server-side functionality as serverless functions. This includes SSR-rendered pages, and Cloud Functions.
+
+Q. Does Launch support hosting static websites?
+A. Yes. To deploy a static site, follow the process specified in your framework code for static site generation (SSG) rendering.
+
+Q. Does Launch support Edge Functions?
+A. Yes. You can execute your code in proximity to your user’s location before a request is processed using Edge Functions in Contentstack Launch.
+
+Q. Does Contentstack Launch support forwarding project logs to specific endpoints?
+A. Yes. The Log Targets feature in Contentstack Launch allows you to forward the logs produced by Launch Cloud Functions or by Launch-supported frameworks to third-party monitoring services that support GRPC OTLP endpoint.
+
+Q. What frameworks can be used to deploy on Launch?
+A. You can find the frameworks supported by Launch in the Launch Framework Support Matrix.
+
+Q. Does Launch support read and write operations to the filesystem at the runtime?
+A. Launch runtime operates in a read-only file system, except for the designated /tmp directory, which facilitates write operations. The /tmp directory is a temporary file system accessible to every Launch serverless runtime, offering up to 500 MB of storage.
+Note: The data stored in /tmp is non-persistent and is automatically deleted upon request completion.
+
+Q. Can I integrate Launch with other services and products?
+A. Yes. Automate includes triggers and actions for common Launch activities. Launch also includes deploy hooks functionality, allowing you to trigger rebuilds via a URL. Launch can also use the Marketplace app to set up an SSO at the edge.
+
+Q. What support can I expect when hosting my site on Launch?
+A. Launch technical support is offered through the same technical support channels used for all other Contentstack products.
+
+Q. What regions is Launch available in?
+A. Launch is available in AWS NA, AWS EU, Azure NA, and Azure EU regions. GCP support will be available soon regions.
+
+Q. Will my site have a downtime when migrating to Launch from a different hosting provider?
+A. Depending upon your specific architecture and change process, migrating your existing site to Launch can be achieved with zero or minimal downtime.
+
+Q. What Git providers does Launch support?
+A. Launch currently supports deploying sites via GitHub and direct zip file uploads. GitLab support will be available shortly.
+
+Q. Does Launch support CI/CD?
+A. Yes. Launch can be configured to automatically redeploy when code updates are committed in GitHub and when webhooks are accessed. Launch commands are also available via Contentstack’s CLI.
+
+Q. Does Launch support deploying code automatically?
+A. Yes. Automatic deployments can be configured in your environment’s settings screen.
+
+Q. Does Launch support creating test environments?
+A. Yes. Each Launch project includes 5 environments by default, which you can use to deploy environments for staging, testing, content review, and more.
+
+Q. How do I debug my websites on Launch?
+A. Launch features deployment and server logs to help you troubleshoot deployments and functionality. Serverless functions can also be tested locally.
+
+Q. Does Launch need access to my GitHub account?
+A. If you wish to deploy sites to Launch directly from GitHub, then you must authenticate with your GitHub account. However, Launch also supports deployments directly from a zip file upload, which does not require GitHub access.
+
+Q. Does Launch support bulk publishing/deployments?
+A. Bulk site deployments can be achieved via the CLI and through local scripting.
+
+Q. Can I run a Docker container on Launch?
+A. Launch is a front-end hosting and deployment platform for websites built on the Contentstack CMS instantly, but it cannot run Docker containers.
+Please refer to this documentation, for more information about Docker containers and why Launch does not support them.
+
+Q. What NodeJS Runtime version does Launch support?
+A. Currently, Launch supports Node.js versions 18.x and 20.x for running website builds during deployment. For more information, please refer to the supported Node.js versions.
