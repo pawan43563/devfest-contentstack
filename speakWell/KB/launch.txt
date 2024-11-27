@@ -64,13 +64,13 @@ Q.  if using the Edge Redirect URL's (Launch), can he redirect the below URL's.
     Is it possible to do using the Edge Redirect URLs (Launch)?
 A. Yes, Edge Redirects in Contentstack can be used to handle this type of URL redirection. Using Contentstack's Edge URL Redirects, you can set up rules that match URLs with specific patterns (such as *.html) and rewrite them to a new format (like :slug).
     {
-    "redirects": [
-        {
-        "source": "/blogs/posts/:postId.html",
-        "destination": "/blog/:postId",
-        "statusCode": 301
-        }
-    ]
+        "redirects": [
+            {
+            "source": "/blogs/posts/:postId.html",
+            "destination": "/blog/:postId",
+            "statusCode": 301
+            }
+        ]
     }
 
 Q. Sitemap for a local environment (pointing to the development environment of the Content Stack)gets updated immediately but the sitemap for the development environment hosted on Content Stack Launch gets updated only after a deployment is triggered.

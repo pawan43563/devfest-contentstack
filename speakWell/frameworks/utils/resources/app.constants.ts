@@ -20,6 +20,8 @@ export const DEFAULT_FRAMES_DIR = './uploads/frames';
 export const DEFAULT_KB_DIR = "./kb";
 export const MAX_OUTPUT_TOKENS = 500;
 export const GPT_API_URL = 'https://api.openai.com/v1/chat/completions';
+export const QROQ_MODAL = "llama-3.2-90b-vision-preview";
+
 
 export enum MODELS {
   GPT_4_TURBO = 'gpt-4-turbo',

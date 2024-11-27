@@ -193,3 +193,6 @@ A. The version property indicates the version of the app, incrementing automatic
 
 Q. Can I use the App Manifest to control the app’s visibility in the Contentstack Marketplace?
 A. Yes, the visibility property controls whether the app is listed in the Contentstack Marketplace or not, based on whether it is set to public, private, or public unlisted.
+
+Q. I want to add environment specific to branch.
+A. Its not possible but let me check whether the ticket is being created.

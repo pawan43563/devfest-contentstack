@@ -7,6 +7,7 @@ import { ChatGPTService } from './services/gpt.service';
 import { ChatAnalysisService } from './services/chat.analysis.service';
 import { JiraController } from './controllers/jira.controller';
 import { JiraService } from './services/jira.service';
+import { QROQService } from './services/qroq.service';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { JiraService } from './services/jira.service';
     ChatGPTService,
     ChatAnalysisService,
     JiraService,
+    QROQService
   ],
 })
 export class AppModule {}

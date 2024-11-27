@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import OpenAI from 'openai';
+import { QROQService } from './qroq.service';
 import { ChatGPTService } from './gpt.service';
 import { ConfigService } from '@nestjs/config';
 import { readFileSync, readdirSync } from 'fs';
@@ -7,8 +8,8 @@ import * as path from 'path';
 import {
   DEFAULT_KB_DIR,
   MODELS,
+  QROQ_MODAL,
 } from 'frameworks/utils/resources/app.constants';
-import { audioFeedbackPrompt } from 'frameworks/utils/prompts/audio.feedback';
 
 @Injectable()
 export class ChatAnalysisService {
@@ -17,6 +18,7 @@ export class ChatAnalysisService {
   constructor(
     private configService: ConfigService,
     private chatGptService: ChatGPTService,
+    private QROQService : QROQService,
   ) {
     this.openai = new OpenAI({
       apiKey: this.configService.get<string>('OPENAI_API_KEY'),
@@ -42,7 +44,7 @@ export class ChatAnalysisService {
     }
 
     // use the data as a context in chatgpt
-    const analysisResponse = await this.analyzeWithGPT35(body, KBResponse);
+    const analysisResponse = await this.analyzeWithGroq(body, KBResponse);
 
     return analysisResponse;
   }
@@ -75,4 +77,34 @@ export class ChatAnalysisService {
       return Promise.reject(error);
     }
   }
+
+  private async analyzeWithGroq(body: string, KBResponse: any): Promise<any> {
+    try {
+      const messages = [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: `Based on the context provided: ${KBResponse}, please analyze the following information: ${JSON.stringify(body)} and provide a detailed solution with step by step only when it is present inside the context else just return NOT FOUND.`,
+            },
+          ],
+        },
+      ];
+      const response = await this.QROQService.chatCompletion(
+        QROQ_MODAL,
+        messages,
+      );
+      return Promise.resolve(response);
+    } catch (error) {
+      if (error.response) {
+        console.error('Error status:', error.response.status);
+        console.error('Error data:', error.response.data);
+      } else {
+        console.error('Error message:', error.message);
+      }
+      return Promise.reject(error);
+    }
+  }
+
 }

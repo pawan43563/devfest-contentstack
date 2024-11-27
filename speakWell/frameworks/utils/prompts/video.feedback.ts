@@ -41,5 +41,4 @@ export const videoFeedbackPrompt = `A candidate is sharing their screen and reco
 // summary from audio -- 2-3 line
 // description from video -- under 300 words -- jira
 // title from audio --
-// label from? if audio mentions algolia, salesforce, wordbee or app then label it Marketplace APP and if video has launch in its url then launch label
-      
+// label from? if audiows mentions algolia, salesforce, wordbee or app then label it Marketplace APP and if video has launch in its url then launch label
