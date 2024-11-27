@@ -1,10 +1,8 @@
-
-
 const Header = () => {
-    return (
-        <div className="navbar bg-base-100">
-            <div className="navbar-start">
-                {/* <div className="dropdown">
+  return (
+    <div className="navbar bg-base-100">
+      <div className="navbar-start">
+        {/* <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn m-1">
                         Theme
                         <svg
@@ -34,12 +32,14 @@ const Header = () => {
                     </ul>
 
                 </div> */}
-            </div>
-            <div className="navbar-center">
-                <h1><strong>Speak Well : Your Online Public Speaking Coach</strong></h1>
-            </div>
-            <div className="navbar-end">
-                {/* <button className="btn btn-ghost btn-circle">
+      </div>
+      <div className="navbar-center">
+        <h1>
+          <strong>Speak Well : Your Online Public Speaking Coach</strong>
+        </h1>
+      </div>
+      <div className="navbar-end">
+        {/* <button className="btn btn-ghost btn-circle">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"
@@ -70,8 +70,9 @@ const Header = () => {
                         <span className="badge badge-xs badge-primary indicator-item"></span>
                     </div>
                 </button> */}
-            </div>
-        </div>)
-}
+      </div>
+    </div>
+  );
+};
 
-export default Header
+export default Header;

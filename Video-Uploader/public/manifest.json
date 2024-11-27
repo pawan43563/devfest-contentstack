@@ -10,7 +10,7 @@
     "default_popup": "index.html",
     "default_title": "Open ContentSpock"
   },
-  "permissions": ["sidePanel", "tabs"],
+  "permissions": ["sidePanel", "tabs", "activeTab", "scripting", "storage"],
   "host_permissions": ["https://*/*", "http://*/*"],
   "commands": {
     "_execute_action": {

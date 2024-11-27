@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Markdown from "react-markdown";
 
-const VideoUploader = ({handleUpload}: any) => {
+const VideoUploader = ({ handleUpload }: any) => {
   const [files, setFiles] = useState<any>([]);
   const [loading, setLoading] = useState(0);
   const [statusText, setStatusText] = useState("Processing...");
@@ -39,14 +39,14 @@ const VideoUploader = ({handleUpload}: any) => {
       handleUpload(files);
       setShowDropdown(false);
     }
-  }, [files])
+  }, [files]);
 
   const generateThumbnail = (file: File) => {
     const url = URL.createObjectURL(file);
     setThumbnail(url);
   };
 
-  function handleRecordVideo(event: MouseEvent<HTMLButtonElement, MouseEvent>): void {
+  function handleRecordVideo(event: React.MouseEvent<HTMLButtonElement>): void {
     throw new Error("Function not implemented.");
   }
 
@@ -185,7 +185,13 @@ const VideoUploader = ({handleUpload}: any) => {
     //   )}
     // </div>
 
-    <div style={{ position: "relative", display: "inline-block", overflow: "visible" }}>
+    <div
+      style={{
+        position: "relative",
+        display: "inline-block",
+        overflow: "visible",
+      }}
+    >
       <button
         onClick={toggleDropdown}
         style={{
