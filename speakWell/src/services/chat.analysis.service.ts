@@ -5,9 +5,9 @@ import { ConfigService } from '@nestjs/config';
 import { readFileSync, readdirSync } from 'fs';
 import * as path from 'path';
 import {
-    DEFAULT_KB_DIR,
-    MODELS,
-  } from 'frameworks/utils/resources/app.constants';
+  DEFAULT_KB_DIR,
+  MODELS,
+} from 'frameworks/utils/resources/app.constants';
 import { audioFeedbackPrompt } from 'frameworks/utils/prompts/audio.feedback';
 
 @Injectable()
@@ -24,28 +24,27 @@ export class ChatAnalysisService {
   }
 
   async extractData(body: any) {
-    // get the data from knowledge base 
+    // get the data from knowledge base
 
     let KBResponse;
     const folderPath = path.join(DEFAULT_KB_DIR);
     const files = readdirSync(folderPath);
 
     // Check if body.label is present in any filename
-    const matchingFile = files.find(file => file.includes(body.label));
+    const matchingFile = files.find((file) => file.includes(body.label));
 
     if (matchingFile) {
-        const filePath = path.join(folderPath, matchingFile);
-        KBResponse = readFileSync(filePath, 'utf-8');
+      const filePath = path.join(folderPath, matchingFile);
+      KBResponse = readFileSync(filePath, 'utf-8');
     } else {
-        KBResponse = await this.analyzeWithGPT35(KBResponse, body.summary);
+      // ----- here KBResponse param is empty ??
+      KBResponse = await this.analyzeWithGPT35(KBResponse, body.summary);
     }
 
     // use the data as a context in chatgpt
     const analysisResponse = await this.analyzeWithGPT35(body, KBResponse);
 
     return analysisResponse;
-
-
   }
 
   private async analyzeWithGPT35(body: string, KBResponse: any): Promise<any> {
@@ -76,5 +75,4 @@ export class ChatAnalysisService {
       return Promise.reject(error);
     }
   }
-
 }

@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -7,10 +7,10 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        entryFileNames: 'chromeextension.js', // Ensure static file names
-        chunkFileNames: 'chromeextension.js',
-        assetFileNames: 'chromeextension.css'
-      }
-    }
-  }
-})
+        entryFileNames: "chromeextension.js", // Ensure static file names
+        chunkFileNames: "chromeextension.js",
+        assetFileNames: "chromeextension.css",
+      },
+    },
+  },
+});

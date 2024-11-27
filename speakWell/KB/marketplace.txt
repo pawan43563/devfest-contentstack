@@ -1,2 +1,195 @@
-Q. Big commerce app selector page is not working data is not getting added?
-A. make sure to add the products
+Q. What is Contentstack Marketplace?
+A. Contentstack Marketplace is a hub where you can discover, browse, and install apps and resources that extend the functionality of the Contentstack CMS. It connects to various third-party services and provides easy one-click installations to enhance your Contentstack experience.
+
+Q. How do I access the Contentstack Marketplace?
+A. To access the Marketplace, log in to your Contentstack account. On the primary navigation menu on the left-hand side, you'll find an icon for Marketplace. Click on it to enter the Marketplace.
+
+Q. What kind of apps and resources are available on Contentstack Marketplace?
+A. The Marketplace offers apps and resources created by Contentstack and its partners. These tools help you customize and extend the functionality of your Contentstack CMS and integrate with third-party services.
+
+Q. Who creates the apps available on the Marketplace?
+A. The apps and resources available in Contentstack Marketplace are created by Contentstack as well as trusted partners.
+
+Q. How can I install apps from the Contentstack Marketplace?
+A. Apps from the Marketplace can be installed with a simple one-click installation process. Once you find an app, click on it to begin the installation.
+
+Q. What are the two types of Marketplace apps?
+A. The two types of Marketplace apps are:
+Stack Apps: Installed for a specific stack, and only stack owners or admins can install them.
+Organization Apps: Installed at the organization level, and only organization owners or admins can install them.
+
+Q. What is the difference between Stack Apps and Organization Apps?
+A.
+Stack Apps: Restricted to a particular stack and can be installed only by stack owners or admins.
+Organization Apps: Affects the entire organization and can be installed only by organization owners or admins.
+
+Q. How can I install a Marketplace app?
+A.
+Click on an app card to go to the app’s information page.
+Click the Install App button.
+For Stack Apps, select the stack where you want to install it and click Install.
+For Organization Apps, authorize access and click Authorize & Install.
+
+Q. What information can I see when I click on an app card?
+A. When you click on an app card, you can view:
+Overview of the app
+Screenshots of the app in use
+Use cases of the app
+Installed On details
+
+Q. What is the main difference between a Marketplace app and an extension?
+A. Apps can be reused across multiple stacks or organizations with just one click, whereas extensions are scoped to a specific stack.
+
+Q. What are the benefits of using apps over extensions?
+A.
+
+Ease of Use: Apps are easier to develop, distribute, and manage.
+Developer-Friendly: Apps simplify development and deployment.
+Security and Scalability: Apps offer better security, scalability, and integration capabilities (e.g., webhooks).
+Q. Can I reuse an app across different stacks or organizations?
+A. Yes, apps can be reused across multiple stacks or organizations with just one click.
+
+Q. How does security and scalability compare between apps and extensions?
+A. Apps offer more advanced security features and are more scalable than extensions.
+
+Q. Why should I use Marketplace apps instead of extensions?
+A. Contentstack recommends using Marketplace apps because they are easier to develop, manage, and provide better security and scalability.
+
+Q. How do I get started with developing an app for Contentstack Marketplace?
+A. Refer to the Contentstack App Development pages for detailed guidance on how to build and deploy an app for the Marketplace.
+
+Q. What are the prerequisites for converting an extension to a marketplace app?
+A.
+Admin access to the stack
+Access to the app-sdk repository
+Node.js v14.18.2 and npm v8.1.4
+
+Q. How do I remove an existing extension from my stack before converting it to a marketplace app?
+A.
+Go to your Contentstack account and select the stack.
+Navigate to "Settings" > "Extensions."
+Hover over the extension and click the "Delete" icon, then confirm.
+
+Q. What are the key steps involved in converting an extension to a marketplace app?
+A.
+Remove the existing extension.
+Develop your marketplace app (frontend and backend, if needed).
+Create and deploy your app in the Contentstack Developer Hub.
+Install the app in the stack.
+
+Q. What are the different UI locations I can add to my marketplace app?
+A. You can add multiple UI locations such as:
+Custom Field
+Sidebar Widget
+Dashboard Widget
+Rich Text Editor (RTE)
+Config Screen with Webhooks
+
+Q. How do I handle URLs for different UI locations in my marketplace app?
+A. Ensure that your app’s URL routing corresponds to the selected UI locations, e.g.:
+Custom Field: https://{yourwebsite.com}/custom-field
+Sidebar Widget: https://{yourwebsite.com}/sidebar-widget
+Dashboard Widget: https://{yourwebsite.com}/dashboard-widget
+
+Q. What is the process to create a marketplace app in Contentstack Developer Hub?
+A. After developing your app and deploying it, you can create a marketplace app in Contentstack Developer Hub by following the "Create an App in Marketplace" document.
+
+Q. How do I install my marketplace app in a stack?
+A. After creating your app in the Developer Hub, you can install it in your stack by following the "Installing an App in Developer Hub" guide.
+
+Q. How can I use my app in content types and entries after installation?
+A. Once installed, navigate to UI locations (like Custom Field) in your content types, and add your app as a custom field or create new entries using the app.
+
+Q. What are Installed Apps in Contentstack?
+A. Installed Apps are third-party applications integrated into your Contentstack organization or stack. These apps can be used to extend functionality, such as adding custom features, configurations, and webhooks to your stacks.
+
+Q. What access levels are required to view Installed Apps?
+A. Access levels depend on permissions at the stack and organization level:
+Organization Admin/Owner: Can view all apps installed at both stack and organization levels.
+Stack Admin/Owner: Can view apps installed for the stacks they have access to.
+Other Users: Can only see apps installed for the stacks they have access to.
+
+Q. How can I view or modify the configuration of an Installed App?
+A. To view or modify the configuration:
+Go to Manage > Installed Apps in the Marketplace section.
+Click the app you want to modify. This takes you to the app’s information page.
+Navigate to the Installed On tab to see where the app is installed.
+Hover over a stack and click the Configuration icon to update settings or uninstall the app.
+Click the Configuration tab to enter detailed settings.
+
+Q. What are UI Locations, and how can I manage them?
+A. UI Locations define where the app appears within your Contentstack interface. To manage:
+Go to the UI Locations tab.
+You can enable or disable specific locations using the toggle button. Required UI locations cannot be disabled.
+
+Q. What is the Webhook feature for Installed Apps?
+A. If webhooks are enabled, you can view and manage events triggered by the app:
+Go to the Webhook tab.
+In the Webhook Logs section, view all events triggered by the app.
+You can configure webhooks to send notifications from all or specific branches.
+
+Q. Can I uninstall an Installed App?
+A. Yes, you can uninstall an app by going to the Installed On tab, hovering over the stack, and clicking the Uninstall App icon.
+
+Q. Can I modify the webhook settings for an Installed App?
+A. Yes, you can modify webhook settings in the Configure Webhook section, selecting whether to trigger the webhook for all or specific branches.
+
+Q. What happens if I disable a UI Location for an Installed App?
+A. Disabling a UI Location will prevent the app from appearing in that location. However, Required UI Locations cannot be disabled.
+
+Q. Can I configure webhooks for individual branches?
+A. Yes, if your organization uses the branch feature, you can configure webhooks to trigger for specific branches for more granular control.
+
+Q. How do I know if an app supports webhooks?
+A. If an app supports webhooks, you will see a Webhook tab in the app’s configuration settings.
+
+Q. What is the App Manifest in Contentstack?
+A. The App Manifest represents an app within Contentstack. It contains metadata such as the app's name, description, visibility settings, event interactions, OAuth configuration, and more.
+
+Q. Who can view the App Manifest?
+A. Users with permissions to manage the app can access the full manifest. Others can view basic details but not the full manifest.
+
+Q. What are the required and optional properties in the App Manifest?
+A.
+Required: Name
+Optional: Description, Target Type, UI Location, Webhook
+System Defined: UID, Framework Version, Version, Visibility, OAuth, Hosting, etc.
+
+Q. What is the 'Target Type' property in the App Manifest?
+A. The target_type property specifies whether the app is stack-level or organization-level. It is immutable once set.
+
+Q. What does the 'Visibility' property mean in the App Manifest?
+A. The visibility property defines if the app is private, public, or public unlisted:
+Private: Only available within the developer’s organization.
+Public: Available for installation by any Contentstack organization and listed in the marketplace.
+Public Unlisted: Available for installation via direct URL but not listed in the marketplace.
+
+Q. What are UI Locations in the App Manifest?
+A. UI Locations define where the app appears within Contentstack, such as the sidebar, dashboard, or custom field locations.
+
+Q. Can I enable webhooks in the App Manifest?
+A. Yes, you can enable webhooks to trigger communication between Contentstack and your app for events like content creation or asset updates.
+
+Q. What is OAuth and how is it used in the App Manifest?
+A. OAuth allows external apps to access Contentstack APIs securely. The App Manifest includes OAuth configuration such as client_id, client_secret, and redirect_uri.
+
+Q. What does the 'Hosting' property in the App Manifest represent?
+A. The hosting property specifies the app’s hosting URL. By default, it is set to http://localhost:3000, but it can be updated to the deployed app’s URL.
+
+Q. What is the purpose of the 'Webhook Channels' section in the App Manifest?
+A. The webhook channels section allows you to specify which events the webhook will subscribe to, ensuring real-time synchronization.
+
+Q. How do I secure my webhook's target URL?
+A. Secure your webhook’s target URL using HTTP basic authentication and custom headers for added security.
+
+Q. Can I update the App Manifest after the app is installed?
+A. Yes, certain properties, like UI locations, webhooks, and OAuth settings, can be updated even after installation. However, properties like target_type are immutable.
+
+Q. What is the 'Created By' and 'Updated By' information in the App Manifest?
+A. These fields track the user IDs of the individuals who created or last updated the app manifest.
+
+Q. What is the significance of the 'Version' property?
+A. The version property indicates the version of the app, incrementing automatically upon updates.
+
+Q. Can I use the App Manifest to control the app’s visibility in the Contentstack Marketplace?
+A. Yes, the visibility property controls whether the app is listed in the Contentstack Marketplace or not, based on whether it is set to public, private, or public unlisted.
