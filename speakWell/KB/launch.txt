@@ -1,0 +1,85 @@
+Q. The user encountered an "Environment Limit reached" error when attempting to create a new environment in Launch, despite having deleted a test environment beforehand. As per checking in superadmin below are limitation provide for their org:
+contentfly_environments: 5
+contentfly_environments_per_project : 5 
+A. In the Launch platform, the total number of environments available is shared across all projects under the same account or subscription plan. Each individual project can have a specific number of environments allocated to it, up to the maximum allowed per project. Alternatively, if multiple projects exist under the same account, their combined environment usage will count toward the overall environment limit defined by your plan.
+    For example:
+
+    If your plan allows a total of 10 environments, you could distribute these across projects however you like, such as:
+    Project A: 5 environments
+    Project B: 3 environments
+    Project C: 2 environments
+
+Q. Can Okta be used to control access to non-production environments (e.g., dev, QA, preview) in Launch? If not, can access be restricted via Cloudflare policies using Contentstack’s or Axonius’ Cloudflare setup?
+A. Yes, Okta can be used to secure non-production environments in Launch. While Launch natively supports basic password protection for lower environments, more advanced access control can be implemented using Launch Edge Functions. These functions allow users to integrate any SSO provider, including Okta, at the edge level for access control. Contentstack provides an example implementation using OAuth SSO via Edge Functions, which can be customized for Okta integration.
+
+    Integrating Okta or Other SSO Providers:
+    Users can leverage Launch Edge Functions to integrate Okta or any other SSO provider. This enables secure access right at the edge, ensuring that access to environments is restricted based on your organization's SSO policies.
+    Contentstack provides an example implementation using Contentstack OAuth SSO, which can serve as a guide to implement Okta similarly. The documentation for using Edge Functions is available on https://www.contentstack.com/docs/developers/launch/edge-functions".
+
+Q. We have a user who is using revalidating technique to update any changes on their live website.
+When they try to do this on the local host, this works perfectly fine because the files are stored locally and the cache is being replaced when they hit revalidating url.
+But when they make changes on the live website and try to replace cache on our servers it does not allow them to do it because the file is READonly.
+they are getting error:
+"Failed to update prerender cache for /de [Error: EROFS: read-only file system, open '/var/task/sourcecode/.next/server/pages/de.html'] {
+errno: -30,
+code: 'EROFS',
+syscall: 'open',
+path: '/var/task/sourcecode/.next/server/pages/de.html'
+}"
+A. This issue arises because files on Launch's server are read-only. To address this, you can use alternative approaches for caching and revalidation that align with web standards and Launch's capabilities.
+
+    1.Server-Side Rendering and Cache-Control Headers:
+    Configure server-side rendering (SSR) for your pages and set appropriate cache-control response headers.
+    This allows browsers and CDNs to manage cache effectively without requiring direct updates to read-only files.
+    Detailed guidance for implementing cache control with both Next.js Pages Router and App Router is available in the Contentstack Launch documentation.
+
+    2.Automation Hub for No-Code Revalidation:
+    Use Automation Hub, a no-code tool within Contentstack Launch, to automatically handle cache revalidation.
+    When an entry in the CMS is updated, Automation Hub triggers revalidation for the associated CDN cache, removing the need for manual API implementation.
+
+    3. Avoid Caching of Revalidate API:
+    If the revalidate URL is cached at the CDN level, update the cache-control headers for the API route to ensure it is not cached.
+    Refer to Next.js App Router Cache Revalidation on Launch for detailed implementation step refer this url:https://www.contentstack.com/docs/developers/automation-hub-connectors/launch#action-2-revalidate-cdn-cache
+
+Q. Why am I seeing the error Cannot find module '/var/task/sourcecode/index.js' during cloud functions deployment on Launch?
+A. This occurs when the node command tries to start a server file that does not exist in the expected directory. To fix this, ensure that cloud functions are placed inside the /functions folder, as Launch automatically sets up cloud functions for files in this folder. Move other files outside of /functions and follow the handler function signature as per the Contentstack documentation.
+
+Q. Does Contentstack Launch provide access to a persistent file system?
+A. No, Launch does not support a persistent file system. For temporary storage during runtime, you can use the file system provided, but it won't retain data across deployments. For persistence, consider using a database or storing data in Contentstack assets.
+
+Q. Are there any limitations on redirects in launch.json, and does Contentstack Launch support .htaccess files
+A. Contentstack Launch does not support .htaccess files, as these are Apache-specific configurations. Instead, it uses the launch.json file for managing redirects. While there is no specific limit on the number of redirects you can define, there is a 200KB hard limit on the file size due to edge constraints.
+
+    For users requiring a large number of redirects, consider using server-side redirects. Edge redirects in launch.json are designed for high-performance scenarios and may not be the best solution for extensive redirection needs.
+
+Q. Why am I getting a 400 Bad Request error when using special characters in a search query in Contentstack?
+A. The 400 Bad Request error typically occurs when special characters are not properly encoded in the URL. To resolve this, you need to URL-encode the query string. For example, a query containing special characters like *, $, &, and @ should be encoded as:
+
+    https://www.example.com/search?q=*%24*%24*%26%26%40%26%40%28
+
+    URL encoding replaces special characters with their encoded equivalents (e.g., $ becomes %24), ensuring that the request is processed correctly.
+
+Q.  if using the Edge Redirect URL's (Launch), can he redirect the below URL's.
+  https://www.example.com/blog/posts/*.html URLs  to redirect to https://www.exmaple.com/blog/:slug (without the .html).
+    Is it possible to do using the Edge Redirect URLs (Launch)?
+A. Yes, Edge Redirects in Contentstack can be used to handle this type of URL redirection. Using Contentstack's Edge URL Redirects, you can set up rules that match URLs with specific patterns (such as *.html) and rewrite them to a new format (like :slug).
+    {
+    "redirects": [
+        {
+        "source": "/blogs/posts/:postId.html",
+        "destination": "/blog/:postId",
+        "statusCode": 301
+        }
+    ]
+    }
+
+Q. Sitemap for a local environment (pointing to the development environment of the Content Stack)gets updated immediately but the sitemap for the development environment hosted on Content Stack Launch gets updated only after a deployment is triggered.
+    Hence, I believe the deployment might be purging some cache which is not getting cleared up on the publish of an entry for the development environment host.Is it possible to create a webhook that would trigger a CSTK Launch redeploy after an entry is published?
+A. If multiple entry updates occur in quick succession (e.g., 20 updates), triggering 20 deployments, Contentstack Launch optimizes the process by skipping intermediate deployments (1–19) and deploying only the final update (20th). This is managed through the Deployment Queuing Mechanism. Refer Deployment Queuing Mechanism.
+    Additionally, a high number of deployments could exhaust the monthly build hours allocated for your account. However, skipped deployments do not count toward the build hours. If you need additional build hours, you can request an increase by contacting Contentstack support.
+
+Q. What are the recommended methods for securing lower environments in a headless CMS setup,
+A. We have a few options that the you can choose from.
+    1.Password protection - Our customers most commonly use this feature to secure their lower environments. The security of this approach is proportional to how strong your password is.
+    2. SSO via edge functions - Ensures that only authenticated users can access the site by integrating with existing identity providers.
+    3.IP Whitelisting - Allow only listed IPs to access your website. This option is currently not available on UI and can be enabled for you if required.

@@ -1,0 +1,8 @@
+Q. Invalid Signature Issue
+A. If the certificate issued by their IDP provider is expired or it does not match with the certificate uploaded in Contentstack, then they need to reach out to their IDP provider to get the certificate renewed and upload to contentstack
+Q. User Not Found Issue
+A. Verify if the email email address used in their IDP is same as Contentstack account email address
+   Verify if any error messages are observed in their console for failed API calls
+   Check if this issue is for a specific account user or for the group of users in a role
+
+
