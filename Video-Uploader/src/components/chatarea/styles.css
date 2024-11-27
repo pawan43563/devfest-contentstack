@@ -79,6 +79,7 @@ body {
   overflow-y: auto;
   padding: 16px;
   background-color: #f9fafb;
+  max-height: calc(100% - 210px);
 }
 
 .message {
@@ -136,9 +137,21 @@ body {
   width: 93%;
   position: absolute;
   display: flex;
+  flex-direction: column;
   gap: 8px;
   padding: 16px;
   border-top: 1px solid #e0e0e0;
+  height: 90px;
+}
+
+.input-area .video-preview-container {
+}
+
+.input-area .text-input {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  padding: 16px;
 }
 
 .input-area input {

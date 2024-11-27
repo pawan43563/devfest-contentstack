@@ -10,6 +10,7 @@ import {
   MODELS,
   QROQ_MODAL,
 } from 'frameworks/utils/resources/app.constants';
+import { extractSummary, toLowercaseAndRemoveSpaces } from 'frameworks/utils/functions';
 
 @Injectable()
 export class ChatAnalysisService {
@@ -25,7 +26,17 @@ export class ChatAnalysisService {
     });
   }
 
-  async extractData(body: any) {
+  async extractLabel(fileData: any) {
+    // read file from the file path
+    console.info(fileData, 'fileData', typeof fileData);
+    const labelMatch = fileData.audioFeedback.match(/- Label:\s*(.+)/);
+    const issueLabel = labelMatch ? labelMatch[1].trim() : null;
+
+    console.log(issueLabel, 'issueLabel');
+    return issueLabel;
+  }
+
+  async extractData(body: any, fileData: any) {
     // get the data from knowledge base
 
     let KBResponse;
@@ -33,7 +44,9 @@ export class ChatAnalysisService {
     const files = readdirSync(folderPath);
 
     // Check if body.label is present in any filename
-    const matchingFile = files.find((file) => file.includes(body.label));
+    const matchingFile = files.find((file) =>
+      file.includes(toLowercaseAndRemoveSpaces(body.issueLabel)),
+    );
 
     if (matchingFile) {
       const filePath = path.join(folderPath, matchingFile);
@@ -44,21 +57,33 @@ export class ChatAnalysisService {
       KBResponse = await this.analyzeWithGPT35(KBResponse, body.summary);
     }
 
+    const summary = extractSummary(fileData?.audioFeedback);
     // use the data as a context in chatgpt
-    const analysisResponse = await this.analyzeWithGroq(body, KBResponse);
+    const analysisResponse = await this.analyzeWithGPT35(summary, KBResponse);
+    console.info(analysisResponse, 'analysisResponse');
 
     return analysisResponse;
   }
 
   private async analyzeWithGPT35(body: string, KBResponse: any): Promise<any> {
+    console.info(body, 'body');
     try {
       const messages = [
+        {
+          role: 'system',
+          content: [
+            {
+              type: 'text',
+              text: `You are a Customer Service Engineer. This is your context: ${KBResponse}. Don't answer out of context.`,
+            },
+          ],
+        },
         {
           role: 'user',
           content: [
             {
               type: 'text',
-              text: `Based on the context provided: ${KBResponse}, please analyze the following information: ${JSON.stringify(body)} and provide a detailed solution with step by step only when it is present inside the context else just return NOT FOUND.`,
+              text: `Please analyze the following information: ${JSON.stringify(body)} and provide a detailed solution with step by step from only if relevant solution is present inside the context. Don't give general troubleshooting steps. Don't mention 'context' in the response. If you do give a solution mention 'ContentSpock' as the title.`,
             },
           ],
         },

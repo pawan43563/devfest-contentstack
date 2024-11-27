@@ -15,6 +15,7 @@ function ChatArea() {
   const [Label, setLabel] = useState<Array<any>>([]);
   const [labelBoolean, setLabelBoolean] = useState<boolean>(false);
   const [labelCorrect, setLabelCorrect] = useState<boolean>(false);
+  const [videoPreview, setVideoPreview] = useState("");
 
   const videoFeedbackCall = async (formData: any) => {
     try {
@@ -71,6 +72,8 @@ function ChatArea() {
     const formDataTemp = new FormData();
     for (const file of files) {
       formDataTemp.append("upload", file);
+      const videoURL = URL.createObjectURL(file);
+      setVideoPreview(videoURL);
     }
     setFormData(formDataTemp);
     return;
@@ -233,6 +236,13 @@ function ChatArea() {
   const handleLabelChange = (event: any) => {
     setLabel(event.target.value);
   };
+  const [messages, setMessages] = useState([
+    { text: "What is Contentstack?", type: "user" },
+    {
+      text: "Contentstack is a modern headless content management system that allows you to manage your content in a flexible and scalable way.",
+      type: "bot",
+    }
+  ]);
 
   return (
     <>
@@ -245,24 +255,22 @@ function ChatArea() {
             <h1>ContentSpock</h1>
           </div>
           <div className="chat-area">
-            <div className="message user-message">
-              <p>What is Contentstack?</p>
-            </div>
-            <div className="message bot-message">
-              <div className="bot-avatar">
-                {/* <!-- <img src="./images/contentstack.png" /> --> */}
-              </div>
-              <p>
-                Contentstack is a modern headless content management system
-                (CMS) designed to help organizations create, manage, and deliver
-                digital content across various channels and devices. Unlike
-                traditional CMS platforms that couple content management with a
-                front-end interface, Contentstack separates the content
-                (back-end) from the presentation layer (front-end). This allows
-                developers and content creators to work independently and gives
-                greater flexibility for delivering content to websites, mobile
-                apps, IoT devices, and more.
-              </p>
+            <div className="messages">
+              {messages.map((message, index) => (
+                <div
+                  key={index}
+                  className={`message ${
+                    message.type === "user" ? "user-message" : "bot-message"
+                  }`}
+                >
+                  {message.text}
+                </div>
+              ))}
+              {videoPreview && (
+                <div className="video-preview">
+                  <video src={videoPreview} controls />
+                </div>
+              )}
             </div>
           </div>
           <div className="label__container">
@@ -300,15 +308,39 @@ function ChatArea() {
             </button>
           </div>
           <div className="input-area">
-            <input type="text" id="userInput" placeholder="Ask a question" />
-            <VideoUploader handleUpload={handleUpload} />
-            <button
-              id="sendButton"
-              className="send-button"
-              onClick={sendVideoAndAudio}
-            >
-              &#10148;
-            </button>
+            {/* {videoPreview && (
+              <div
+                style={{
+                  marginTop: "20px",
+                  border: "1px solid #ccc",
+                  borderRadius: "8px",
+                  padding: "10px",
+                  width: "150px",
+                  height: "100px",
+                }}
+                className="video-preview-container"
+              >
+                <video
+                  src={videoPreview}
+                  controls
+                  style={{
+                    width: "100%",
+                    borderRadius: "8px",
+                  }}
+                ></video>
+              </div>
+            )} */}
+            <div className="text-input">
+              <input type="text" id="userInput" placeholder="Ask a question" />
+              <VideoUploader handleUpload={handleUpload} />
+              <button
+                id="sendButton"
+                className="send-button"
+                onClick={sendVideoAndAudio}
+              >
+                &#10148;
+              </button>
+            </div>
           </div>
         </div>
       </div>

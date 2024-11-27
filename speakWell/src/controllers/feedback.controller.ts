@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Query, Res, UseInterceptors } from '@nestjs/common';
 import { Response } from 'express';
 import * as fs from 'fs/promises';
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { AudioAnalysisService } from '../services/audio.analysis.service';
 import { VideoAnalysisService } from '../services/video.analysis.service';
 import { MultipartInterceptor } from 'frameworks/middlewares/interceptors/multipart';
@@ -84,8 +84,31 @@ export class FeedbackController {
   ): Promise<any> {
     // const userId = body.userId ?? '123';
     const filePath = `./chat_data/feedback_${userId}.json`;
-    const chatFeedback = await this.chatAnalysisService.extractData(body);
-    await this.appendToJsonFile(filePath, 'chatFeedback', chatFeedback);
-    return response.status(200).send(chatFeedback);
+    const fileData = JSON.parse(readFileSync(filePath, 'utf-8'));
+
+    // check if issueLabel is present in the body
+    // if not then extract it from the file and ask user to confirm
+    let issueLabel = null;
+
+    if (!body?.issueLabel) {
+      issueLabel = await this.chatAnalysisService.extractLabel(fileData);
+      if (!issueLabel) {
+        return response
+          .status(200)
+          .send(
+            'Could not understand what this issue is from. Can you share the label?',
+          );
+      }
+      return response.status(200).send({ issueLabel });
+    } else {
+      issueLabel = body.issueLabel;
+      await this.appendToJsonFile(filePath, 'issueLabel', issueLabel);
+      const chatFeedback = await this.chatAnalysisService.extractData(
+        body,
+        fileData,
+      );
+      await this.appendToJsonFile(filePath, 'chatFeedback', chatFeedback);
+      return response.status(200).send(chatFeedback);
+    }
   }
 }

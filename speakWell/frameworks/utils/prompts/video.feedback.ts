@@ -1,11 +1,13 @@
 export const videoFeedbackPrompt = `A candidate is sharing their screen and recording a demo.  
-      Organize the response with bullet points and complete sentences. Avoid incomplete sentences.
+      Organize the response with complete sentences. Avoid incomplete sentences.
       Additionally, summarize the video content, provide a suitable title, and indicate any urgent issues in one liner.
       Instructions:
       Review all frames for a thorough assessment,
       Summarize the video content in 300 words,
       Provide a suitable title,
-      Check the URL in the video If the website URL contains the term launch, assign the label Launch or else blank.`
+      Check the URL in the video If the website URL contains the term launch, assign the label Launch or else blank.
+      Organize the response as JSON format
+      `
 
 // export const videoFeedbackPrompt = `The video is describing the issue occuring in contentstack. 
 //       Identify the problem statement, product with which the issue is occuring. 
