@@ -74,4 +74,50 @@ export class JiraService {
       );
     }
   }
+  
+  async addCommentToTicket(ticketId: string, comment: string): Promise<void> {
+    const url = `${this.baseUrl}/rest/api/2/issue/${ticketId}`;
+    const auth = Buffer.from(`${this.email}:${this.apiToken}`).toString('base64');
+  
+    try {
+
+      const bodyData = `{
+        "body": {
+          "content": [
+            {
+              "content": [
+                {
+                  "text": ${comment},
+                  "type": "text"
+                }
+              ],
+              "type": "paragraph"
+            }
+          ],
+          "type": "doc",
+          "version": 1
+        }
+      }`;
+      
+
+      const response: any = await axios.post(url, bodyData, {
+        headers: {
+          Authorization: `Basic ${auth}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log("response", response)
+      return response.body;
+    } catch (error) {
+      console.log("error", error.response?.statusText);
+      throw new HttpException(
+        {
+          message: 'Failed to add comment to ticket',
+          error: error.response?.statusText || error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
 }

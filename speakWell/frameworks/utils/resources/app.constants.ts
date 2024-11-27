@@ -28,3 +28,9 @@ export enum MODELS {
   GPT_4_OMNI = 'gpt-4o',
   GPT_WHISPER_1 = 'whisper-1',
 }
+
+export const JIRAFILEMAPPER = {
+  "CS": "launch",
+  "CLOUD": "Launch",
+  "MKT": "Marketplace"
+}
