@@ -8,7 +8,7 @@ import logo from "../assets/contentstack.png";
 import { useChat } from "../hooks/useChat";
 import { PreviewTicket } from "./preview-ticket";
 import services from "../services";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export default function ContentSpock() {
   const {

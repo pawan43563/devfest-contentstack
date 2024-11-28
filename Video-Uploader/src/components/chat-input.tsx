@@ -31,7 +31,7 @@ export function ChatInput({
   const videoInputRef = useRef<HTMLInputElement>(null);
 
   const handleVideoBtnClick = () => {
-    console.info("Es")
+    console.info("Es");
     if (videoInputRef.current) {
       videoInputRef.current.click();
     }
@@ -60,9 +60,9 @@ export function ChatInput({
   // );
 
   const handleSetMessages = () => {
-    const newMessage = messages[0]
+    const newMessage = messages[0];
     setMessages([newMessage]);
-  }
+  };
 
   return (
     <div className="p-4 border-t">

@@ -84,7 +84,7 @@ const resolutionChecker = (data) => {
       "I'm sorry",
       "I apologize",
       "There isn't specific troubleshooting",
-      "analysis is missing"
+      "analysis is missing",
     ];
     if (
       ignoreWords?.find(
@@ -127,9 +127,12 @@ const getResolutionCall = async (label: any) =>
     });
 
 const getTicketSummary = async (userId) => {
-  return fetch(`http://localhost:3000/jira/get-ticket-summary?userId=${userId}`, {
-    method: "GET",
-  })
+  return fetch(
+    `http://localhost:3000/jira/get-ticket-summary?userId=${userId}`,
+    {
+      method: "GET",
+    }
+  )
     .then((res) => {
       return res.json();
     })
