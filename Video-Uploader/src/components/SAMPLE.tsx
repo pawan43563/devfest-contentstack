@@ -47,7 +47,7 @@ export default function ContentSpock() {
         <ChatMessage
           content="Hey there! Have a query? Facing an issue?"
           isUser
-          selectOptions={["Launch", "Marketplace", "CMS", "Automate"]}
+          selectOptions={["Launch", "Marketplace App", "CMS", "Automate"]}
           onSelectOption={() => {}}
         />
       </div>

@@ -1,5 +1,6 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import logo from "../assets/contentstack.png";
+import services from "../services";
 
 interface Message {
   id: string;
@@ -20,11 +21,16 @@ interface Message {
 
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [labelCategory, setLabelCategory] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleSelectInput = (label) => onLabelClick(label, "select");
 
-  const onLabelClick = useCallback((label, category) => {
+  useEffect(() => {
+    console.info("labelC", labelCategory)
+  }, [labelCategory])
+
+  const onLabelClick = useCallback( async (label, category, cat) => {
     if (category === "init") {
       addMessage({
         id: "2",
@@ -56,12 +62,31 @@ export function useChat() {
           content: "Please wait a moment!. we are processing the input",
           avatar: logo,
         });
+        console.log("labelCategory", cat);
+        // call to get resolution
+        const response = await services.getResolutionCall(cat);
+        console.info("Response", response);
+        if (response?.status === 400) {
+          // ADD HERE CREATE TICKET
+          addMessage({
+            id: "8",
+            content: "Would you like to create a ticket?",
+            avatar: logo,
+          });
+        } else { 
+          addMessage({
+            id: "8",
+            content: response,
+            avatar: logo,
+          });
+        }
+
       } else {
         addMessage({
           id: "7",
           content: "Please select a label from the following",
           avatar: logo,
-          selectOptions: ["Launch", "Marketplace", "CMS", "Automate"],
+          selectOptions: ["Launch", "Marketplace App", "CMS", "Automate"],
           onSelectOption: handleSelectInput,
         });
       }
@@ -141,5 +166,6 @@ export function useChat() {
     scrollToBottom,
     addMessage,
     onLabelClick,
+    setLabelCategory,
   };
 }

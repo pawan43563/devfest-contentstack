@@ -17,6 +17,7 @@ export default function ContentSpock() {
     scrollToBottom,
     addMessage,
     onLabelClick,
+    setLabelCategory,
   } = useChat();
 
   const [videoAttached, setVideoAttached] = useState(false);
@@ -27,7 +28,9 @@ export default function ContentSpock() {
 
   const handleInitMsg = (label) => onLabelClick(label, "init");
 
-  const handleLabelMsg = (label) => onLabelClick(label, "label");
+  const handleLabelMsg = (label, cat) => {
+    onLabelClick(label, "label", cat);
+  };
 
   const onVideoAttach = async (files: any) => {
     setVideoAttached(true);
@@ -43,7 +46,10 @@ export default function ContentSpock() {
 
   const removeVideo = () => setVideoAttached(false);
 
-  const handleSelectInput = (label) => onLabelClick(label, "select");
+  const handleSelectInput = (label) => {
+    console.info("handleselect", label);
+    onLabelClick(label, "select");
+  };
 
   const handleSubmit = async () => {
     if (videoAttached && formData) {
@@ -64,19 +70,22 @@ export default function ContentSpock() {
         });
         if (res !== "success") {
           if (res) {
+            console.info("Res", res);
+
             addMessage({
               id: "6",
               content: `We have identified the Label: ${res}. Is this Correct?`,
               avatar: logo,
               labels: ["Yes", "No"],
-              onLabelClick: handleLabelMsg,
+              onLabelClick: (e) => { handleLabelMsg(e, res) },
             });
+
           } else {
             addMessage({
               id: "6",
               content: `We were not able to identify the Label. Can you Select the label?`,
               avatar: logo,
-              selectOptions: ["Launch", "Marketplace", "CMS", "Automate"],
+              selectOptions: ["Launch", "Marketplace App", "CMS", "Automate"],
               onSelectOption: handleSelectInput,
             });
           }

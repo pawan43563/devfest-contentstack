@@ -89,8 +89,8 @@ export class FeedbackController {
     // check if issueLabel is present in the body
     // if not then extract it from the file and ask user to confirm
     let issueLabel = null;
-
-    if (!body?.issueLabel) {
+    let parsedBody = JSON.parse(body);
+    if (!parsedBody?.issueLabel) {
       issueLabel = await this.chatAnalysisService.extractLabel(fileData);
       if (!issueLabel) {
         return response
@@ -101,10 +101,10 @@ export class FeedbackController {
       }
       return response.status(200).send({ issueLabel });
     } else {
-      issueLabel = body.issueLabel;
+      issueLabel = parsedBody.issueLabel;
       await this.appendToJsonFile(filePath, 'issueLabel', issueLabel);
       const chatFeedback = await this.chatAnalysisService.extractData(
-        body,
+        parsedBody,
         fileData,
       );
       await this.appendToJsonFile(filePath, 'chatFeedback', chatFeedback);

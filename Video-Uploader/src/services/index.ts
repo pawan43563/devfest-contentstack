@@ -32,8 +32,6 @@ const audioFeedbackCall = async (formData: any) =>
       return res.text();
     })
     .then((data) => {
-      //   setAudioFeedback(data as string);
-      //   setLabelBoolean(true);
       console.log("Response data:", data);
       const labelRegex = /Label:\s*(.+)/;
       const match = data.match(labelRegex);
@@ -55,15 +53,13 @@ const handleVideoUpload = async (formData) => {
     const videoRes: any = await videoFeedbackCall(formData);
     const audioRes: any = await audioFeedbackCall(formData);
     if (audioRes?.success && videoRes) {
-      const labelOptions = ["Launch", "Marketplace", "CMS", "Automate"]
+      const labelOptions = ["Launch", "Marketplace App", "CMS", "Automate"]
       let foundLabel;
-      console.log("foundLabel", audioRes, videoRes);
       if (videoRes?.value !== "undefined") {
         foundLabel = labelOptions.find(label => videoRes?.value?.toLowerCase().includes(label?.toLowerCase()));
       } else if (audioRes?.value !== "undefined") {
         foundLabel = labelOptions.find(label => audioRes?.value?.toLowerCase().includes(label?.toLowerCase()));
       }
-      console.log("foundLabel", foundLabel);
       if (foundLabel) return foundLabel ?? "success";
     } else {
       return "fail";
@@ -73,8 +69,49 @@ const handleVideoUpload = async (formData) => {
   }
 };
 
+
+const resolutionChecker = ( data ) => {
+  try {
+    const ignoreWords = ["Unfortunately", "does not match"];
+    if (ignoreWords?.find((word) => data?.includes(word))) {
+      return {
+        status: 400
+      }
+    } 
+    return data;
+  } catch(error) {
+    console.info("Error inside resolutionChecker", error);
+    return {
+      status: 400
+    }
+  }
+}
+
+const getResolutionCall = async (label: any) =>
+  fetch("http://localhost:3000/feedback/chat?userId=123", {
+    method: "POST",
+    body: JSON.stringify({
+      "issueLabel": label
+    })
+  })
+    .then((res) => {
+      return res.text();
+    })
+    .then((data) => {
+      console.log("Response data:", data);
+      return resolutionChecker(data);
+    })
+    .catch((err) => {
+      console.log("Error:", err);
+      return {
+        success: false,
+      };
+    });
+
+
 const services = {
   handleVideoUpload,
+  getResolutionCall,
 };
 
 export default services;
