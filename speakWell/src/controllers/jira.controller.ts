@@ -166,7 +166,6 @@ export class JiraController {
 
       // Check if body.label is present in any filename
       const matchingFile = files.find((file) => file.includes(JIRAFILEMAPPER[projectKey]));
-
       if (matchingFile) {
         filePath = path.join(folderPath, matchingFile);
       } else {

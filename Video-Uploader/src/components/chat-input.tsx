@@ -24,7 +24,7 @@ export function ChatInput({
   removeVideo,
   setMessages,
   messages,
-  input, 
+  input,
   setInput,
 }: any) {
   const [files, setFiles] = useState<any>([]);

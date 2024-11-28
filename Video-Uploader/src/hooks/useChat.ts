@@ -11,7 +11,6 @@ interface Message {
   avatar?: string;
   videoPreview?: {
     thumbnailUrl?: string;
-    Message;
     videoUrl: string;
   };
   labels?: string[];
@@ -19,6 +18,7 @@ interface Message {
   selectOptions?: string[];
   onSelectOption?: (label: string) => void;
   isPreview?: boolean;
+  previewData?: any;
 }
 
 export function useChat() {
@@ -302,6 +302,7 @@ export function useChat() {
             content: "",
             avatar: logo,
             isPreview: true,
+            previewData,
           });
           loadingDelay();
           addMessage({

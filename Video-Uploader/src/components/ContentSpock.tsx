@@ -104,8 +104,7 @@ export default function ContentSpock() {
           avatar: logo,
         });
       }
-    }
-    else if (input.trim()){
+    } else if (input.trim()) {
       addMessage({
         id: uuidv4(),
         content: input,
@@ -155,6 +154,7 @@ export default function ContentSpock() {
             selectOptions={message?.selectOptions ?? []}
             onSelectOption={message?.onSelectOption ?? (() => {})}
             isPreview={message?.isPreview ?? false}
+            previewData={message?.previewData ?? {}}
           />
         ))}
         <div ref={messagesEndRef} />
