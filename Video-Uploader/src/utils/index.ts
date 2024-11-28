@@ -25,8 +25,33 @@ const parseToJSON = (text) => {
   return json;
 };
 
+function extractDetails(input) {
+  const cleanedInput = input.replace(/[^a-zA-Z0-9:.\s\n]/g, '');
+
+  const fields: any = {};
+
+  // Step 2: Extract Title
+  const titleMatch = cleanedInput.match(/Title:\s*(.+)/);
+  if (titleMatch) fields.title = titleMatch[1].trim();
+
+  // Step 3: Extract Summary
+  const summaryMatch = cleanedInput.match(/Summary:\s*(.+)/);
+  if (summaryMatch) fields.summary = summaryMatch[1].trim();
+
+  // Step 4: Extract Description
+  const descriptionMatch = cleanedInput.match(/Description:\s*([\s\S]*?)(?=\nLabel:|\n?$)/);
+  if (descriptionMatch) fields.description = descriptionMatch[1].trim();
+
+  // Step 5: Extract Label
+  const labelMatch = cleanedInput.match(/Label:\s*(.+)/);
+  if (labelMatch) fields.label = labelMatch[1].trim();
+
+  return fields;
+}
+
 const utils = {
   parseToJSON,
+  extractDetails
 };
 
 export default utils;

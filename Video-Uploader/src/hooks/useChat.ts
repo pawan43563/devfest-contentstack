@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import logo from "../assets/contentstack.png";
 import services from "../services";
+import utils from "../utils";
 
 interface Message {
   id: string;
@@ -236,8 +237,15 @@ export function useChat() {
           "Thank you for providing the details. Please wait while we process the issue.",
         avatar: logo,
       });
-      setChatLoading(true);
+      // setChatLoading(true);
       // --------------- make API call to /feedback/chaat to get details and add to previewData state
+
+      const ticketSummary = await services.getTicketSummary('user123');
+      console.info("Ticket Summary", ticketSummary);
+      const ticketJSON = utils.extractDetails(ticketSummary.ticket);
+      ticketJSON.time = new Date().toLocaleString();
+      console.log({...previewData, ...ticketJSON})
+      setPreviewData((prevData) => ({...prevData, ...ticketJSON}));
       if (true) {
         setChatLoading(false);
         // addMessage({

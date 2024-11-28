@@ -126,9 +126,28 @@ const getResolutionCall = async (label: any) =>
       };
     });
 
+const getTicketSummary = async (userId) => {
+  return fetch(`http://localhost:3000/jira/get-ticket-summary?userId=${userId}`, {
+    method: "GET",
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log("Error:", err);
+      return {
+        success: false,
+      };
+    });
+};
+
 const services = {
   handleVideoUpload,
   getResolutionCall,
+  getTicketSummary
 };
 
 export default services;
