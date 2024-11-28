@@ -144,10 +144,30 @@ const getTicketSummary = async (userId) => {
     });
 };
 
+const createTicket = async (ticketDetails, userId) => {
+  return fetch(`http://localhost:3000/jira/create-ticket?userId=${userId}`, {
+    method: "POST",
+    body: JSON.stringify(ticketDetails),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      console.log("Error:", err);
+      return {
+        success: false,
+      };
+    });
+};
+
 const services = {
   handleVideoUpload,
   getResolutionCall,
-  getTicketSummary
+  getTicketSummary,
+  createTicket,
 };
 
 export default services;

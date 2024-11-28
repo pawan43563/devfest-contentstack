@@ -26,6 +26,17 @@ export function useChat() {
   const [previewData, setPreviewData] = useState<any>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+
+  useEffect(() => {
+    console.log("Preview Data", previewData);
+  }, [previewData])
+
+  const createATicket = async() => {
+    console.info("Preview Data in func", previewData);
+    const response = await services.createTicket(previewData, 'user123');
+    console.info("Response", response);
+  }
+
   const loadingDelay = () => {
     setChatLoading(true);
     setTimeout(() => {}, 500);
@@ -298,6 +309,9 @@ export function useChat() {
         });
         setChatLoading(true);
         // --------------- API call to create ticket
+        console.info("Preview Data", previewData);
+        createATicket();
+        
         if (true) {
           setChatLoading(false);
           addMessage({
@@ -323,7 +337,7 @@ export function useChat() {
         });
       }
     }
-  }, []);
+  }, [addMessage, createATicket, handleImpactLabel, handleNoLabelData, handlePriorityLabel, handleResolveIssue, handleSelectInput, handleTicketCreate, previewData]);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

@@ -24,6 +24,7 @@ export class JiraService {
   }
 
   async createTicket(ticketDetails: any): Promise<any> {
+    console.info("Ticket Details", ticketDetails);
     const url = `${this.baseUrl}/rest/api/2/issue`;
     const auth = Buffer.from(`${this.email}:${this.apiToken}`).toString(
       'base64',
@@ -34,10 +35,10 @@ export class JiraService {
         project: {
           key: ticketDetails.projectKey,
         },
-        summary: ticketDetails.summary,
-        description: ticketDetails.description,
+        summary: ticketDetails.title,
+        description: ticketDetails.summary,
         issuetype: {
-          name: ticketDetails.issueType,
+          name: ticketDetails.issueType || 'Task',
         },
       },
     };
@@ -51,6 +52,7 @@ export class JiraService {
       });
       return response.data;
     } catch (error) {
+      console.info('Error creating Jira ticket:', error);
       throw new HttpException(
         {
           message: 'Failed to create Jira ticket',

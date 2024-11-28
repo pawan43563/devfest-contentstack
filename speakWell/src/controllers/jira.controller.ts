@@ -77,6 +77,7 @@ export class JiraController {
         ticket: result,
       };
     } catch (error) {
+      console.info("Error", error);
       throw new HttpException(
         {
           message: 'Failed to create Jira ticket',
