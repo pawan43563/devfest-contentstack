@@ -3,6 +3,7 @@ import { Avatar } from "./ui/avatar";
 import { VideoPreview } from "./video-preview";
 import { Button } from "./ui/button";
 import { ChevronDown } from "lucide-react";
+import { PreviewTicket } from "./preview-ticket";
 
 interface ChatMessageProps {
   content: string;
@@ -16,6 +17,7 @@ interface ChatMessageProps {
   onLabelClick?: (label: string) => void;
   selectOptions?: string[];
   onSelectOption?: (option: string) => void;
+  isPreview?: boolean;
 }
 
 const ChatMessage = memo(function ChatMessage({
@@ -27,6 +29,7 @@ const ChatMessage = memo(function ChatMessage({
   onLabelClick,
   selectOptions,
   onSelectOption,
+  isPreview,
 }: ChatMessageProps) {
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [labelDisable, setLabelDisable] = useState(false);
@@ -48,6 +51,13 @@ const ChatMessage = memo(function ChatMessage({
           }`}
         >
           <p className="text-sm">{content}</p>
+          {isPreview && (
+            <PreviewTicket
+              title="Here's a quick preview of Jira Ticket Content"
+              content="Click on the component to View Details"
+              onClick={() => {}} // -----------handle preview overlay here
+            />
+          )}
           {labels && labels.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-2">
               {labels.map((label, index) => (
