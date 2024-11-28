@@ -15,7 +15,6 @@ export function VideoPreview({
   onPlay,
   onRemove,
 }: VideoPreviewProps) {
-
   const [play, setPlay] = React.useState(false);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
@@ -28,7 +27,6 @@ export function VideoPreview({
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -51,17 +49,19 @@ export function VideoPreview({
         style={{ width: "100%", height: "100%", objectFit: "cover" }}
       ></video>
 
-      {!play && <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 transition-opacity hover:bg-opacity-50">
-         <Button
-          variant="ghost"
-          size="icon"
-          className="text-white hover:text-purple-200"
-          onClick={handleModal}
-        >
-          <Play className="h-8 w-8" />
-          <span className="sr-only">Play video</span>
-        </Button>
-      </div>}
+      {!play && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 transition-opacity hover:bg-opacity-50">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white hover:text-purple-200"
+            onClick={handleModal}
+          >
+            <Play className="h-8 w-8" />
+            <span className="sr-only">Play video</span>
+          </Button>
+        </div>
+      )}
       {onRemove && (
         <Button
           variant="ghost"
@@ -95,7 +95,6 @@ export function VideoPreview({
           </div>
         </div>
       )}
-
     </div>
   );
 }

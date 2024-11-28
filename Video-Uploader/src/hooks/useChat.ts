@@ -15,6 +15,7 @@ interface Message {
   onLabelClick?: (label: string) => void;
   selectOptions?: string[];
   onSelectOption?: (label: string) => void;
+  isPreview?: boolean;
 }
 
 export function useChat() {
@@ -235,44 +236,17 @@ export function useChat() {
           "Thank you for providing the details. Please wait while we process the issue.",
         avatar: logo,
       });
-      // --------------- make jira API call
+      setChatLoading(true);
+      // --------------- make API call to /feedback/chaat to get details and add to previewData state
+      if (true) {
+        setChatLoading(false);
+        // addMessage({
+        //   id: "30",
+
+        // })
+      }
     }
   }, []);
-
-  const sendMessage = useCallback(
-    async (content: string) => {
-      // Add user message
-      addMessage({
-        id: Date.now().toString(),
-        content,
-        // type: "user"
-      });
-
-      try {
-        // Make API call
-        const response = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: content }),
-        });
-
-        if (!response.ok) throw new Error("Failed to send message");
-
-        const data = await response.json();
-
-        // Add bot response
-        addMessage({
-          id: Date.now().toString(),
-          content: data.reply,
-          //   type: "bot",
-        });
-      } catch (error) {
-        console.error("Error sending message:", error);
-        // Handle error (e.g., show an error message to the user)
-      }
-    },
-    [addMessage]
-  );
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -280,7 +254,6 @@ export function useChat() {
 
   return {
     messages,
-    sendMessage,
     messagesEndRef,
     scrollToBottom,
     addMessage,

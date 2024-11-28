@@ -12,7 +12,6 @@ import services from "../services";
 export default function ContentSpock() {
   const {
     messages,
-    sendMessage,
     messagesEndRef,
     scrollToBottom,
     addMessage,
@@ -42,12 +41,13 @@ export default function ContentSpock() {
       const videoURL = URL.createObjectURL(file);
       setVideoPreview(videoURL);
 
-      const videoElement = document.getElementById('videoPreview') as HTMLVideoElement;
+      const videoElement = document.getElementById(
+        "videoPreview"
+      ) as HTMLVideoElement;
       if (videoElement) {
         videoElement.src = videoURL;
         videoElement.load();
       }
-
     }
     setFormData(formDataTemp);
     return;
