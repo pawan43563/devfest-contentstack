@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import logo from "../assets/contentstack.png";
+import { v4 as uuidv4 } from 'uuid';
 import services from "../services";
 
 interface Message {
@@ -8,7 +9,7 @@ interface Message {
   isUser?: boolean;
   avatar?: string;
   videoPreview?: {
-    thumbnailUrl?: string;
+    thumbnailUrl?: string;Message
     videoUrl: string;
   };
   labels?: string[];
@@ -35,19 +36,19 @@ export function useChat() {
   const handleNoLabelData = () => {
     loadingDelay();
     addMessage({
-      id: "8",
+      id: uuidv4(),
       content: "Unfortunately, we could not find any matching results",
       avatar: logo,
     });
     loadingDelay();
     addMessage({
-      id: "9",
+      id: uuidv4(),
       content: "We would like to help you resolve the resolve",
       avatar: logo,
     });
     loadingDelay();
     addMessage({
-      id: "10",
+      id: uuidv4(),
       content: "Would you like to report the Issue?",
       avatar: logo,
       labels: ["Yes", "No"],
@@ -59,7 +60,7 @@ export function useChat() {
     // make a call and add Message
     onLabelClick(label, "select");
     addMessage({
-      id: "7",
+      id: uuidv4(),
       content: "Please wait a moment!. we are processing the input",
       avatar: logo,
     });
@@ -71,9 +72,16 @@ export function useChat() {
       handleNoLabelData();
     } else {
       addMessage({
-        id: "8",
+        id: uuidv4(),
         content: response,
         avatar: logo,
+      });
+      addMessage({
+        id: uuidv4(),
+        content: "Does this resolve your Question?",
+        labels: ["Yes", "No"],
+        avatar: logo,
+        onLabelClick: handleResolveIssue,
       });
     }
   };
@@ -95,24 +103,24 @@ export function useChat() {
   const handleResolveIssue = (label) => {
     if (label.toLowerCase() === "yes") {
       addMessage({
-        id: "15",
+        id: uuidv4(),
         content: label,
         isUser: true,
       });
       addMessage({
-        id: "16",
+        id: uuidv4(),
         content: "Hurray!! We're glad that we were able to solve your Query.",
         avatar: logo,
       });
     } else {
       addMessage({
-        id: "16",
+        id: uuidv4(),
         content: label,
         isUser: true,
       });
       // here handle that 
       addMessage({
-        id: "10",
+        id: uuidv4(),
         content: "Would you like to report the Issue?",
         avatar: logo,
         labels: ["Yes", "No"],
@@ -124,32 +132,32 @@ export function useChat() {
   const onLabelClick = useCallback(async (label, category, cat?) => {
     if (category === "init") {
       addMessage({
-        id: "2",
+        id: uuidv4(),
         content: label,
         isUser: true,
       });
       if (label?.toLowerCase()?.includes("yes")) {
         addMessage({
-          id: "3",
+          id: uuidv4(),
           content: "Report us through Chat or Video Recording",
           avatar: logo,
         });
       } else {
         addMessage({
-          id: "3",
+          id: uuidv4(),
           content: "Do reach out to us in case of any queries",
           avatar: logo,
         });
       }
     } else if (category === "label") {
       addMessage({
-        id: "6",
+        id: uuidv4(),
         content: label,
         isUser: true,
       });
       if (label?.toLowerCase()?.includes("yes")) {
         addMessage({
-          id: "7",
+          id: uuidv4(),
           content: "Please wait a moment!. we are processing the input",
           avatar: logo,
         });
@@ -162,12 +170,12 @@ export function useChat() {
           handleNoLabelData();
         } else {
           addMessage({
-            id: "8",
+            id: uuidv4(),
             content: response,
             avatar: logo,
           });
           addMessage({
-            id: "9",
+            id: uuidv4(),
             content: "Does this resolve your Question?",
             labels: ["Yes", "No"],
             avatar: logo,
@@ -176,7 +184,7 @@ export function useChat() {
         }
       } else {
         addMessage({
-          id: "7",
+          id: uuidv4(),
           content: "Please select a label from the following",
           avatar: logo,
           selectOptions: ["Launch", "Marketplace App", "CMS", "Automate"],
@@ -185,27 +193,27 @@ export function useChat() {
       }
     } else if (category === "select") {
       addMessage({
-        id: "8",
+        id: uuidv4(),
         content: label,
         isUser: true,
       });
     } else if (category === "ticket") {
       addMessage({
-        id: "20",
+        id: uuidv4(),
         content: label,
         isUser: true,
       });
       if (label?.toLowerCase() === "yes") {
         loadingDelay();
         addMessage({
-          id: "21",
+          id: uuidv4(),
           content:
             "For reporting this issue, we would like to know some additional details",
           avatar: logo,
         });
         loadingDelay();
         addMessage({
-          id: "22",
+          id: uuidv4(),
           content:
             "Please select the level of impact the issue is having on your customers",
           avatar: logo,
@@ -214,19 +222,19 @@ export function useChat() {
         });
       } else {
         addMessage({
-          id: "21",
+          id: uuidv4(),
           content: "No worries!!. Do reach out to us in case of any queries",
           avatar: logo,
         });
       }
     } else if (category === "impact") {
       addMessage({
-        id: "23",
+        id: uuidv4(),
         content: label,
         isUser: true,
       });
       addMessage({
-        id: "24",
+        id: uuidv4(),
         content: "What priority would you like to assign to this issue?",
         avatar: logo,
         labels: ["P1", "P2", "P3"],
@@ -234,13 +242,13 @@ export function useChat() {
       });
     } else if (category === "priority") {
       addMessage({
-        id: "25",
+        id: uuidv4(),
         content: label,
         isUser: true,
       });
       loadingDelay();
       addMessage({
-        id: "26",
+        id: uuidv4(),
         content:
           "Thank you for providing the details. Please wait while we process the issue.",
         avatar: logo,
@@ -270,5 +278,6 @@ export function useChat() {
     chatLoading,
     setChatLoading,
     handleSelectInput,
+    setMessages,
   };
 }

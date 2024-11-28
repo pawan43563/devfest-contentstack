@@ -8,6 +8,7 @@ import logo from "../assets/contentstack.png";
 import { useChat } from "../hooks/useChat";
 import { PreviewTicket } from "./preview-ticket";
 import services from "../services";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function ContentSpock() {
   const {
@@ -19,6 +20,7 @@ export default function ContentSpock() {
     chatLoading,
     setChatLoading,
     handleSelectInput,
+    setMessages,
   } = useChat();
 
   const [videoAttached, setVideoAttached] = useState(false);
@@ -57,7 +59,7 @@ export default function ContentSpock() {
   const handleSubmit = async () => {
     if (videoAttached && formData) {
       addMessage({
-        id: "4",
+        id: uuidv4(),
         content: "Uploading Video ...",
         isUser: true,
         videoPreview: { videoUrl: videoPreview },
@@ -69,14 +71,14 @@ export default function ContentSpock() {
       setChatLoading(false);
       if (res !== "fail") {
         addMessage({
-          id: "5",
+          id: uuidv4(),
           content: "Video Uploaded Sucessfully",
           avatar: logo,
         });
         if (res !== "success") {
           if (res) {
             addMessage({
-              id: "6",
+              id: uuidv4(),
               content: `We have identified the Label: ${res}. Is this Correct?`,
               avatar: logo,
               labels: ["Yes", "No"],
@@ -86,7 +88,7 @@ export default function ContentSpock() {
             });
           } else {
             addMessage({
-              id: "6",
+              id: uuidv4(),
               content: `We were not able to identify the Label. Can you Select the label?`,
               avatar: logo,
               selectOptions: ["Launch", "Marketplace App", "CMS", "Automate"],
@@ -96,7 +98,7 @@ export default function ContentSpock() {
         }
       } else {
         addMessage({
-          id: "5",
+          id: uuidv4(),
           content: "Video Upload Failed. Try Again!",
           avatar: logo,
         });
@@ -107,7 +109,7 @@ export default function ContentSpock() {
   useEffect(() => {
     if (!ref.current) {
       addMessage({
-        id: "1",
+        id: uuidv4(),
         content: "Hey there! Have a query? Facing an issue?",
         avatar: logo,
         labels: ["Yes, please", "No, thanks"],
@@ -148,6 +150,8 @@ export default function ContentSpock() {
         videoPreview={
           videoAttached ? { thumbnailUrl: "", videoUrl: "" } : undefined
         }
+        messages={messages}
+        setMessages={setMessages}
       />
     </div>
   );

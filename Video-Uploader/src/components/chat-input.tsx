@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Send, Video } from "lucide-react";
+import { Send, Video, RefreshCcwIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { VideoPreview } from "./video-preview";
@@ -22,6 +22,8 @@ export function ChatInput({
   onVideoAttach,
   videoPreview,
   removeVideo,
+  setMessages,
+  messages,
 }: any) {
   const [input, setInput] = useState("");
   const [files, setFiles] = useState<any>([]);
@@ -29,6 +31,7 @@ export function ChatInput({
   const videoInputRef = useRef<HTMLInputElement>(null);
 
   const handleVideoBtnClick = () => {
+    console.info("Es")
     if (videoInputRef.current) {
       videoInputRef.current.click();
     }
@@ -56,6 +59,11 @@ export function ChatInput({
   //   [input, sendMessage]
   // );
 
+  const handleSetMessages = () => {
+    const newMessage = messages[0]
+    setMessages([newMessage]);
+  }
+
   return (
     <div className="p-4 border-t">
       {videoPreview && (
@@ -71,6 +79,10 @@ export function ChatInput({
         </div>
       )}
       <div className="flex items-center gap-2">
+        <Button variant="ghost" size="icon" onClick={handleSetMessages}>
+          <RefreshCcwIcon className="h-5 w-5 text-purple-600" />
+          <span className="sr-only">Refresh</span>
+        </Button>
         <Button variant="ghost" size="icon" onClick={handleVideoBtnClick}>
           <Video className="h-5 w-5 text-purple-600" />
           <span className="sr-only">Attach video</span>
