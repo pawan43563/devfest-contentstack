@@ -138,6 +138,7 @@ export default function ContentSpock() {
             onLabelClick={message?.onLabelClick ?? (() => {})}
             selectOptions={message?.selectOptions ?? []}
             onSelectOption={message?.onSelectOption ?? (() => {})}
+            isPreview={message?.isPreview ?? false}
           />
         ))}
         <div ref={messagesEndRef} />

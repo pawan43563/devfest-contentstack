@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import logo from "../assets/contentstack.png";
 import { v4 as uuidv4 } from 'uuid';
 import services from "../services";
+import utils from "../utils";
 
 interface Message {
   id: string;
@@ -55,6 +56,8 @@ export function useChat() {
       onLabelClick: handleTicketLabel,
     });
   };
+
+  const handleTicketCreate = (label) => onLabelClick(label, "createTicket");
 
   const handleSelectInput = async (label) => {
     // make a call and add Message
@@ -113,12 +116,14 @@ export function useChat() {
         avatar: logo,
       });
     } else {
+
       addMessage({
         id: uuidv4(),
         content: label,
         isUser: true,
       });
       // here handle that 
+
       addMessage({
         id: uuidv4(),
         content: "Would you like to report the Issue?",
@@ -127,7 +132,7 @@ export function useChat() {
         onLabelClick: handleTicketLabel,
       });
     }
-  }
+  };
 
   const onLabelClick = useCallback(async (label, category, cat?) => {
     if (category === "init") {
@@ -253,14 +258,69 @@ export function useChat() {
           "Thank you for providing the details. Please wait while we process the issue.",
         avatar: logo,
       });
-      setChatLoading(true);
+      // setChatLoading(true);
       // --------------- make API call to /feedback/chaat to get details and add to previewData state
+
+      const ticketSummary = await services.getTicketSummary('user123');
+      console.info("Ticket Summary", ticketSummary);
+      const ticketJSON = utils.extractDetails(ticketSummary.ticket);
+      ticketJSON.time = new Date().toLocaleString();
+      console.log({...previewData, ...ticketJSON})
+      setPreviewData((prevData) => ({...prevData, ...ticketJSON}));
       if (true) {
         setChatLoading(false);
-        // addMessage({
-        //   id: "30",
-
-        // })
+        addMessage({
+          id: "30",
+          content: "",
+          avatar: logo,
+          isPreview: true,
+        });
+        loadingDelay();
+        addMessage({
+          id: "31",
+          content:
+            "Are the above details provided in the above Ticket Preview correct?",
+          labels: ["Yes", "No"],
+          onLabelClick: handleTicketCreate,
+        });
+      }
+    } else if (category === "createTicket") {
+      addMessage({
+        id: "31",
+        content: label,
+        isUser: true,
+      });
+      if (label?.toLowerCase()?.includes("yes")) {
+        addMessage({
+          id: "32",
+          content: "Please wait while we create a ticket.",
+          avatar: logo,
+        });
+        setChatLoading(true);
+        // --------------- API call to create ticket
+        if (true) {
+          setChatLoading(false);
+          addMessage({
+            id: "33",
+            content: "Ticket Created Successfully. The Jira Ticket Id is --",
+            avatar: logo,
+          });
+        } else {
+          setChatLoading(false);
+          addMessage({
+            id: "33",
+            content:
+              "Some Error Occurred while processing the request. Please Try Again!!",
+            avatar: logo,
+          });
+        }
+      } else {
+        // ------ some data is wrong in preview and user need to modify (negative)
+        addMessage({
+          id: "32",
+          content: "Do reach out to us in case of any queries",
+          avatar: logo,
+        });
       }
     }
   }, []);
