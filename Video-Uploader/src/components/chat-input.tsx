@@ -8,6 +8,7 @@ import { useChat } from "../hooks/useChat";
 interface ChatInputProps {
   placeholder?: string;
   onSend: () => void;
+  removeVideo: () => void;
   onVideoAttach?: (files: any[]) => void;
   videoPreview?: {
     thumbnailUrl: string;
@@ -20,6 +21,7 @@ export function ChatInput({
   onSend,
   onVideoAttach,
   videoPreview,
+  removeVideo,
 }: ChatInputProps) {
   const [input, setInput] = useState("");
   const [files, setFiles] = useState<any>([]);
@@ -30,6 +32,11 @@ export function ChatInput({
     if (videoInputRef.current) {
       videoInputRef.current.click();
     }
+  };
+
+  const handleRemoveVideo = () => {
+    setFiles([]);
+    removeVideo();
   };
 
   useEffect(() => {
@@ -56,6 +63,7 @@ export function ChatInput({
           <VideoPreview
             thumbnailUrl={videoPreview.thumbnailUrl}
             videoUrl={videoPreview.videoUrl}
+            onRemove={handleRemoveVideo}
             onPlay={() => {
               /* Handle video play */
             }}

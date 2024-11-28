@@ -44,13 +44,12 @@ export default function ContentSpock() {
   const removeVideo = () => setVideoAttached(false);
 
   const handleSubmit = async () => {
-    console.info("here in submit");
     if (videoAttached && formData) {
       addMessage({
         id: "4",
         content: "Uploading Video ...",
         isUser: true,
-        videoPreview: { thumbnailUrl: "", videoUrl: "" },
+        videoPreview: { thumbnailUrl: videoPreview, videoUrl: videoPreview },
       });
 
       setVideoAttached(false);
@@ -119,6 +118,7 @@ export default function ContentSpock() {
       <ChatInput
         onSend={handleSubmit}
         onVideoAttach={onVideoAttach}
+        removeVideo={removeVideo}
         videoPreview={
           videoAttached ? { thumbnailUrl: "", videoUrl: "" } : undefined
         }

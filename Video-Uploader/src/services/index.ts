@@ -30,10 +30,11 @@ const audioFeedbackCall = async (formData: any) =>
       //   setAudioFeedback(data as string);
       //   setLabelBoolean(true);
       console.log("Response data:", data);
-      const jsonRes = utils.parseToJSON(data);
+      const labelRegex = /Label:\s*(.+)/;
+      const match = data.match(labelRegex);
       return {
         success: true,
-        value: jsonRes,
+        value: match?.[0] ?? "Undefined",
       };
     })
     .catch((err) => {
