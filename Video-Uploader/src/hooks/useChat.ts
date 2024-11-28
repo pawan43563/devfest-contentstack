@@ -269,41 +269,39 @@ export function useChat() {
           "Thank you for providing the details. Please wait while we process the issue.",
         avatar: logo,
       });
-      // setChatLoading(true);
-      // --------------- make API call to /feedback/chaat to get details and add to previewData state
-
+      setChatLoading(true);
       const ticketSummary = await services.getTicketSummary('user123');
       console.info("Ticket Summary", ticketSummary);
       const ticketJSON = utils.extractDetails(ticketSummary.ticket);
       ticketJSON.time = new Date().toLocaleString();
-      console.log({...previewData, ...ticketJSON})
-      setPreviewData((prevData) => ({...prevData, ...ticketJSON}));
-      if (true) {
+      const modifiedPrevData = {...previewData, ...ticketJSON}
+      setPreviewData(modifiedPrevData);
+      if (Object.keys(modifiedPrevData)?.length) {
         setChatLoading(false);
-        addMessage({
-          id: "30",
+        addMessage({         /// ----------- here preview needs to be handled
+          id: uuidv4(),
           content: "",
           avatar: logo,
           isPreview: true,
         });
         loadingDelay();
         addMessage({
-          id: "31",
+          id: uuidv4(),
           content:
-            "Are the above details provided in the above Ticket Preview correct?",
+            "Are the above details provided in the Ticket Preview correct?",
           labels: ["Yes", "No"],
           onLabelClick: handleTicketCreate,
         });
       }
     } else if (category === "createTicket") {
       addMessage({
-        id: "31",
+        id: uuidv4(),
         content: label,
         isUser: true,
       });
       if (label?.toLowerCase()?.includes("yes")) {
         addMessage({
-          id: "32",
+          id: uuidv4(),
           content: "Please wait while we create a ticket.",
           avatar: logo,
         });
@@ -315,14 +313,14 @@ export function useChat() {
         if (true) {
           setChatLoading(false);
           addMessage({
-            id: "33",
+            id: uuidv4(),
             content: "Ticket Created Successfully. The Jira Ticket Id is --",
             avatar: logo,
           });
         } else {
           setChatLoading(false);
           addMessage({
-            id: "33",
+            id: uuidv4(),
             content:
               "Some Error Occurred while processing the request. Please Try Again!!",
             avatar: logo,
@@ -331,8 +329,8 @@ export function useChat() {
       } else {
         // ------ some data is wrong in preview and user need to modify (negative)
         addMessage({
-          id: "32",
-          content: "Do reach out to us in case of any queries",
+          id: uuidv4(),
+          content: "We would like to inform you that we would add this functionality shortly",
           avatar: logo,
         });
       }
