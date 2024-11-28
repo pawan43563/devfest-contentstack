@@ -40,11 +40,17 @@ export default function ContentSpock() {
       formDataTemp.append("upload", file);
       const videoURL = URL.createObjectURL(file);
       setVideoPreview(videoURL);
+
+      const videoElement = document.getElementById('videoPreview') as HTMLVideoElement;
+      if (videoElement) {
+        videoElement.src = videoURL;
+        videoElement.load();
+      }
+
     }
     setFormData(formDataTemp);
     return;
   };
-
   const removeVideo = () => setVideoAttached(false);
 
   const handleSelectInput = async (label) => {
@@ -79,7 +85,7 @@ export default function ContentSpock() {
         id: "4",
         content: "Uploading Video ...",
         isUser: true,
-        videoPreview: { thumbnailUrl: videoPreview, videoUrl: videoPreview },
+        videoPreview: { videoUrl: videoPreview },
       });
 
       setVideoAttached(false);

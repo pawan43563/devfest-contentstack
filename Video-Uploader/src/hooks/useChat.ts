@@ -8,7 +8,7 @@ interface Message {
   isUser?: boolean;
   avatar?: string;
   videoPreview?: {
-    thumbnailUrl: string;
+    thumbnailUrl?: string;
     videoUrl: string;
   };
   labels?: string[];

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Play, X } from "lucide-react";
 import { Button } from "./ui/button";
 
@@ -15,24 +15,53 @@ export function VideoPreview({
   onPlay,
   onRemove,
 }: VideoPreviewProps) {
+
+  const [play, setPlay] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  const handleModal = () => {
+    setIsModalOpen(true); // Open the modal when fullscreen button is clicked
+    handlePlay();
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handlePlay = () => {
+    if (videoRef.current) {
+      videoRef.current.play();
+      setPlay(true);
+    }
+    if (onPlay) {
+      onPlay();
+    }
+  };
   return (
     <div className="relative w-48 h-32 rounded-lg overflow-hidden shadow-md">
-      <img
-        src={thumbnailUrl}
-        alt="Video thumbnail"
+      <video
+        src={videoUrl}
+        controls
         className="w-full h-full object-cover"
-      />
-      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 transition-opacity hover:bg-opacity-50">
-        <Button
+        crossOrigin="anonymous"
+        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+      ></video>
+
+      {!play && <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 transition-opacity hover:bg-opacity-50">
+         <Button
           variant="ghost"
           size="icon"
           className="text-white hover:text-purple-200"
-          onClick={() => onPlay?.()}
+          onClick={handleModal}
         >
           <Play className="h-8 w-8" />
           <span className="sr-only">Play video</span>
         </Button>
-      </div>
+      </div>}
       {onRemove && (
         <Button
           variant="ghost"
@@ -44,6 +73,29 @@ export function VideoPreview({
           <span className="sr-only">Remove video</span>
         </Button>
       )}
+
+      {/* Fullscreen Modal */}
+      {isModalOpen && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 z-50 flex items-center justify-center">
+          <div className="relative w-full max-w-screen-lg">
+            <video
+              ref={videoRef}
+              src={videoUrl}
+              controls
+              autoPlay
+              className="w-full h-full object-cover"
+              crossOrigin="anonymous"
+            ></video>
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 text-white text-xl"
+            >
+              <X className="h-8 w-8" />
+            </button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

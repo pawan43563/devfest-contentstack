@@ -11,8 +11,8 @@ interface ChatInputProps {
   removeVideo: () => void;
   onVideoAttach?: (files: any[]) => void;
   videoPreview?: {
-    thumbnailUrl: string;
-    videoUrl: string;
+    thumbnailUrl?: string;
+    videoUrl?: string;
   };
 }
 
@@ -22,7 +22,7 @@ export function ChatInput({
   onVideoAttach,
   videoPreview,
   removeVideo,
-}: any) {
+}: any ) {
   const [input, setInput] = useState("");
   const [files, setFiles] = useState<any>([]);
 
