@@ -10,8 +10,13 @@ const videoFeedbackCall = async (formData: any) =>
     })
     .then((data) => {
       //   setVideoFeedback(data as string);
-      console.log("Response data:", data);
-      return true;
+      const labelRegex = /Label:\s*(.+)/;
+      const match = data.match(labelRegex);
+      console.log("match", match);
+      return {
+        success: true,
+        value: match?.[0] ?? "undefined",
+      };
     })
     .catch((err) => {
       console.log("Error:", err);
@@ -32,9 +37,10 @@ const audioFeedbackCall = async (formData: any) =>
       console.log("Response data:", data);
       const labelRegex = /Label:\s*(.+)/;
       const match = data.match(labelRegex);
+      console.log("match", match);
       return {
         success: true,
-        value: match?.[0] ?? "Undefined",
+        value: match?.[0] ?? "undefined",
       };
     })
     .catch((err) => {
@@ -49,7 +55,16 @@ const handleVideoUpload = async (formData) => {
     const videoRes: any = await videoFeedbackCall(formData);
     const audioRes: any = await audioFeedbackCall(formData);
     if (audioRes?.success && videoRes) {
-      if (audioRes?.value?.Label) return audioRes?.value?.Label ?? "success";
+      const labelOptions = ["Launch", "Marketplace", "CMS", "Automate"]
+      let foundLabel;
+      console.log("foundLabel", audioRes, videoRes);
+      if (videoRes?.value !== "undefined") {
+        foundLabel = labelOptions.find(label => videoRes?.value?.toLowerCase().includes(label?.toLowerCase()));
+      } else if (audioRes?.value !== "undefined") {
+        foundLabel = labelOptions.find(label => audioRes?.value?.toLowerCase().includes(label?.toLowerCase()));
+      }
+      console.log("foundLabel", foundLabel);
+      if (foundLabel) return foundLabel ?? "success";
     } else {
       return "fail";
     }

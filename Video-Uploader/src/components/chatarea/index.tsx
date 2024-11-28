@@ -78,8 +78,8 @@ function ChatArea() {
   useEffect(() => {
     console.log(videoFeedback, audioFeedback);
     const regex = /(?<=Label:\s).*/;
-    const audioLabel: any = audioFeedback.match(regex);
-    const videoLabel: any = videoFeedback.match(regex);
+    const audioLabel: any = audioFeedback?.match(regex);
+    const videoLabel: any = videoFeedback?.match(regex);
 
     if (labelOptions?.includes(audioLabel?.[0])) {
       setLabel(audioLabel?.[0]);

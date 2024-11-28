@@ -3,6 +3,10 @@
  */
 
 import daisyui from "daisyui";
+import tailwindcssAnimate from "tailwindcss-animate";
+
+
+import daisyui from "daisyui";
 export default {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -57,7 +61,7 @@ export default {
       },
     },
   },
-  plugins: [daisyui, require("tailwindcss-animate")],
+  plugins: [daisyui, tailwindcssAnimate],
   daisyui: {
     themes: [
       "light",

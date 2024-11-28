@@ -43,6 +43,8 @@ export default function ContentSpock() {
 
   const removeVideo = () => setVideoAttached(false);
 
+  const handleSelectInput = (label) => onLabelClick(label, "select");
+
   const handleSubmit = async () => {
     if (videoAttached && formData) {
       addMessage({
@@ -61,13 +63,23 @@ export default function ContentSpock() {
           avatar: logo,
         });
         if (res !== "success") {
-          addMessage({
-            id: "6",
-            content: `We have identified the Label as: ${res}. Is this correct?`,
-            labels: ["Yes", "No"],
-            onLabelClick: handleLabelMsg,
-            avatar: logo,
-          });
+          if (res) {
+            addMessage({
+              id: "6",
+              content: `We have identified the Label: ${res}. Is this Correct?`,
+              avatar: logo,
+              labels: ["Yes", "No"],
+              onLabelClick: handleLabelMsg,
+            });
+          } else {
+            addMessage({
+              id: "6",
+              content: `We were not able to identify the Label. Can you Select the label?`,
+              avatar: logo,
+              selectOptions: ["Launch", "Marketplace", "CMS", "Automate"],
+              onSelectOption: handleSelectInput,
+            });
+          }
         }
       } else {
         addMessage({

@@ -22,7 +22,7 @@ export function ChatInput({
   onVideoAttach,
   videoPreview,
   removeVideo,
-}: ChatInputProps) {
+}: any) {
   const [input, setInput] = useState("");
   const [files, setFiles] = useState<any>([]);
 
