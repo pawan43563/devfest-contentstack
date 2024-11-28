@@ -56,6 +56,8 @@ export function useChat() {
     });
   };
 
+  const handleTicketCreate = (label) => onLabelClick(label, "createTicket");
+
   const handleSelectInput = async (label) => {
     // make a call and add Message
     onLabelClick(label, "select");
@@ -102,7 +104,7 @@ export function useChat() {
         avatar: logo,
       });
     } else {
-      // here handle that 
+      // here handle that
       addMessage({
         id: "10",
         content: "Would you like to report the Issue?",
@@ -111,7 +113,7 @@ export function useChat() {
         onLabelClick: handleTicketLabel,
       });
     }
-  }
+  };
 
   const onLabelClick = useCallback(async (label, category, cat?) => {
     if (category === "init") {
@@ -253,6 +255,52 @@ export function useChat() {
           content: "",
           avatar: logo,
           isPreview: true,
+        });
+        loadingDelay();
+        addMessage({
+          id: "31",
+          content:
+            "Are the above details provided in the above Ticket Preview correct?",
+          labels: ["Yes", "No"],
+          onLabelClick: handleTicketCreate,
+        });
+      }
+    } else if (category === "createTicket") {
+      addMessage({
+        id: "31",
+        content: label,
+        isUser: true,
+      });
+      if (label?.toLowerCase()?.includes("yes")) {
+        addMessage({
+          id: "32",
+          content: "Please wait while we create a ticket.",
+          avatar: logo,
+        });
+        setChatLoading(true);
+        // --------------- API call to create ticket
+        if (true) {
+          setChatLoading(false);
+          addMessage({
+            id: "33",
+            content: "Ticket Created Successfully. The Jira Ticket Id is --",
+            avatar: logo,
+          });
+        } else {
+          setChatLoading(false);
+          addMessage({
+            id: "33",
+            content:
+              "Some Error Occurred while processing the request. Please Try Again!!",
+            avatar: logo,
+          });
+        }
+      } else {
+        // ------ some data is wrong in preview and user need to modify (negative)
+        addMessage({
+          id: "32",
+          content: "Do reach out to us in case of any queries",
+          avatar: logo,
         });
       }
     }

@@ -30,7 +30,7 @@ const ChatMessage = memo(function ChatMessage({
   selectOptions,
   onSelectOption,
   isPreview,
-}: ChatMessageProps) {
+}: any) {
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [labelDisable, setLabelDisable] = useState(false);
   const [selectDisable, setSelectDisable] = useState(false);
