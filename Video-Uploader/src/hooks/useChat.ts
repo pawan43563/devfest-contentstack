@@ -9,10 +9,7 @@ interface Message {
   content: string;
   isUser?: boolean;
   avatar?: string;
-  videoPreview?: {
-    thumbnailUrl?: string;Message
-    videoUrl: string;
-  };
+  videoPreview?: any;
   labels?: string[];
   onLabelClick?: (label: string) => void;
   selectOptions?: string[];
