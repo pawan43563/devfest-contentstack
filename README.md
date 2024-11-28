@@ -16,7 +16,7 @@ ContentSpock harnesses advanced AI to transform the support experience by automa
 
     i. Navigate to the backend folder and run the following commands:
 
-         cd contentstack-backend 
+         cd contentspock-backend 
 
     ii. Install the dependencies:
 
@@ -46,7 +46,7 @@ ContentSpock harnesses advanced AI to transform the support experience by automa
 
     i. Navigate to the frontend folder and run the following commands:
 
-         cd contentstack-frontend
+         cd contentspock-frontend
 
     ii. Install the dependencies:
 
