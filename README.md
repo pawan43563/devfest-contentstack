@@ -4,22 +4,25 @@ ContentSpock harnesses advanced AI to transform the support experience by automa
 
 ## How to setup the project
 
-1. Clone the repo
+  
+1. #### Clone the repo
 
          git clone https://github.com/pawan43563/devfest-contentstack.git 
 
+***
 
 2. #### Set-Up the backend server
+   
 
     i. Navigate to the backend folder and run the following commands:
 
          cd contentstack-backend 
 
-    ii. install the dependencies:
+    ii. Install the dependencies:
 
          npm install 
 
-    iii. create a .env file and add the following environment variables:
+    iii. Create a .env file and add the following environment variables:
 
         
          OPENAI_API_KEY=<<YOUR OPENAI API KEY>>
@@ -29,13 +32,15 @@ ContentSpock harnesses advanced AI to transform the support experience by automa
          JIRA_API_TOKEN=<<YOUR JIRA API TOKEN>>
         
 
-    iv. build and start the server with following commands:
+    iv. Build and start the server with following commands:
 
          npm run build
+   
          npm run start
 
     v. The server will start running on port 3000
 
+***
 
 3. #### Set-Up the frontend
 
@@ -43,7 +48,7 @@ ContentSpock harnesses advanced AI to transform the support experience by automa
 
          cd contentstack-frontend
 
-    ii. install the dependencies:
+    ii. Install the dependencies:
 
          npm install
 
@@ -57,8 +62,10 @@ ContentSpock harnesses advanced AI to transform the support experience by automa
 
     v. The  "ContentSpock" extension will be loaded inside your chrome extensions list and is ready to use. 
 
+***
 
 4. Click on the "ContentSpock" extension, a chat panel will open. You can start interacting with the ContentSpock.
 
+***
 
 #### Happy Hacking!
