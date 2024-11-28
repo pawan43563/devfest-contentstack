@@ -24,6 +24,8 @@ interface Message {
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [chatLoading, setChatLoading] = useState(false);
+  const [priority, setPriority] = useState("");
+  const [impact, setImpact] = useState("");
   const [previewData, setPreviewData] = useState<any>({});
   const [isCreateTicket, setIsCreateTicket] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -124,11 +126,13 @@ export function useChat() {
 
   const handleImpactLabel = (label) => {
     onLabelClick(label, "impact");
+    setImpact(label);
     setPreviewData((prevData) => ({ ...prevData, Impact: label }));
   };
 
   const handlePriorityLabel = (label) => {
     onLabelClick(label, "priority");
+    setPriority(label);
     setPreviewData((prevData) => ({ ...prevData, Priority: label }));
   };
 
@@ -299,10 +303,14 @@ export function useChat() {
           addMessage({
             /// ----------- here preview needs to be handled
             id: uuidv4(),
-            content: "",
+            content: " ",
             avatar: logo,
             isPreview: true,
-            previewData,
+            previewData: {
+              ...modifiedPrevData,
+              Priority: priority ?? "",
+              Impact: impact ?? "",
+            },
           });
           loadingDelay();
           addMessage({

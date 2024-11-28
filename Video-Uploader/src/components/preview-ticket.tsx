@@ -61,7 +61,6 @@ function generateJiraTicketPreviewHTML({
 }
 
 const handlePreview = (previewData: any) => {
-  console.info("previewData handlePreview", previewData)
   const overlayContent = generateJiraTicketPreviewHTML(previewData);
   // Send a message to the background overlay script
   chrome.runtime.sendMessage({
@@ -79,7 +78,7 @@ export function PreviewTicket({
   content: string;
   previewData: any;
 }) {
-  const fn = () => handlePreview(previewData)
+  const fn = () => handlePreview(previewData);
   return (
     <button onClick={fn}>
       <h3 className="font-medium text-purple-900 mb-1">{title}</h3>
