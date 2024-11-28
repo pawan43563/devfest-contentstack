@@ -55,13 +55,17 @@ const handleVideoUpload = async (formData) => {
     const videoRes: any = await videoFeedbackCall(formData);
     const audioRes: any = await audioFeedbackCall(formData);
     if (audioRes?.success && videoRes) {
-      const labelOptions = ["Launch", "Marketplace", "CMS", "Automate"]
+      const labelOptions = ["Launch", "Marketplace", "CMS", "Automate"];
       let foundLabel;
       console.log("foundLabel", audioRes, videoRes);
       if (videoRes?.value !== "undefined") {
-        foundLabel = labelOptions.find(label => videoRes?.value?.toLowerCase().includes(label?.toLowerCase()));
+        foundLabel = labelOptions.find((label) =>
+          videoRes?.value?.toLowerCase().includes(label?.toLowerCase())
+        );
       } else if (audioRes?.value !== "undefined") {
-        foundLabel = labelOptions.find(label => audioRes?.value?.toLowerCase().includes(label?.toLowerCase()));
+        foundLabel = labelOptions.find((label) =>
+          audioRes?.value?.toLowerCase().includes(label?.toLowerCase())
+        );
       }
       console.log("foundLabel", foundLabel);
       if (foundLabel) return foundLabel ?? "success";

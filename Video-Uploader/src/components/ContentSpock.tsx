@@ -17,6 +17,7 @@ export default function ContentSpock() {
     scrollToBottom,
     addMessage,
     onLabelClick,
+    chatLoading,
   } = useChat();
 
   const [videoAttached, setVideoAttached] = useState(false);
@@ -126,6 +127,7 @@ export default function ContentSpock() {
           />
         ))}
         <div ref={messagesEndRef} />
+        {chatLoading && <Loading />}
       </div>
       <ChatInput
         onSend={handleSubmit}

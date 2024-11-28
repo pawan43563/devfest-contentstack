@@ -20,9 +20,14 @@ interface Message {
 
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [chatLoading, setChatLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleSelectInput = (label) => onLabelClick(label, "select");
+
+  const addMessage = useCallback((newMessage: Message) => {
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  }, []);
 
   const onLabelClick = useCallback((label, category) => {
     if (category === "init") {
@@ -91,10 +96,6 @@ export function useChat() {
     }
   }, []);
 
-  const addMessage = useCallback((newMessage: Message) => {
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-  }, []);
-
   const sendMessage = useCallback(
     async (content: string) => {
       // Add user message
@@ -141,5 +142,7 @@ export function useChat() {
     scrollToBottom,
     addMessage,
     onLabelClick,
+    chatLoading,
+    setChatLoading,
   };
 }
