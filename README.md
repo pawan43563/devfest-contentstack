@@ -44,7 +44,7 @@ ContentSpock harnesses advanced AI to transform the support experience by automa
 
 3. #### Set-Up the frontend
 
-    i. Navigate to the frontend folder and run the following commands:
+    i. Navigate to the frontend folder using the following command:
 
          cd contentspock-frontend
 
@@ -56,15 +56,15 @@ ContentSpock harnesses advanced AI to transform the support experience by automa
 
          npm run build
 
-    After the build is completed, dist folder will be craeted inside the contentspock-frontend directory.
+      After the build is completed, dist folder will be created inside the contentspock-frontend directory.
 
-    iv. Open Chrome, Goto Extensions > Manage Extensions, Click on Load Unpacked and select the dist folder.
+    iv. Open Chrome, Goto Extensions > Manage Extensions, Click on "Load unpacked" from upper-left corner and select the dist folder.
 
     v. The  "ContentSpock" extension will be loaded inside your chrome extensions list and is ready to use. 
 
 ***
 
-4. Click on the "ContentSpock" extension, a chat panel will open. You can start interacting with the ContentSpock.
+4. Click on the "ContentSpock" extension, a chat panel will open. Now you can start interacting with the ContentSpock.
 
 ***
 
