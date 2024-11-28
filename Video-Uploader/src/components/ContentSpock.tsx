@@ -18,6 +18,7 @@ export default function ContentSpock() {
     addMessage,
     onLabelClick,
     chatLoading,
+    setChatLoading,
   } = useChat();
 
   const [videoAttached, setVideoAttached] = useState(false);
@@ -63,7 +64,7 @@ export default function ContentSpock() {
         content: "Would you like to create a ticket?",
         avatar: logo,
       });
-    } else { 
+    } else {
       addMessage({
         id: "8",
         content: response,
@@ -82,7 +83,9 @@ export default function ContentSpock() {
       });
 
       setVideoAttached(false);
+      setChatLoading(true);
       const res = await services.handleVideoUpload(formData);
+      setChatLoading(false);
       if (res !== "fail") {
         addMessage({
           id: "5",
@@ -91,15 +94,15 @@ export default function ContentSpock() {
         });
         if (res !== "success") {
           if (res) {
-
             addMessage({
               id: "6",
               content: `We have identified the Label: ${res}. Is this Correct?`,
               avatar: logo,
               labels: ["Yes", "No"],
-              onLabelClick: (e) => { handleLabelMsg(e, res) },
+              onLabelClick: (e) => {
+                handleLabelMsg(e, res);
+              },
             });
-
           } else {
             addMessage({
               id: "6",

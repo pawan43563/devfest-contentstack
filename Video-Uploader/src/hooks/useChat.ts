@@ -26,7 +26,7 @@ export function useChat() {
 
   const handleSelectInput = async (label) => {
     // make a call and add Message
-    onLabelClick(label, "select")
+    onLabelClick(label, "select");
     addMessage({
       id: "7",
       content: "Please wait a moment!. we are processing the input",
@@ -42,7 +42,7 @@ export function useChat() {
         content: "Would you like to create a ticket?",
         avatar: logo,
       });
-    } else { 
+    } else {
       addMessage({
         id: "8",
         content: response,
@@ -55,7 +55,13 @@ export function useChat() {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
   }, []);
 
-  const onLabelClick = useCallback(async(label, category, cat?) => {
+  const handleTicketLabel = (label) => onLabelClick(label, "ticket");
+
+  const handleImpactLabel = (label) => onLabelClick(label, "impact");
+
+  const handlePriorityLabel = (label) => onLabelClick(label, "priority");
+
+  const onLabelClick = useCallback(async (label, category, cat?) => {
     if (category === "init") {
       addMessage({
         id: "2",
@@ -88,24 +94,36 @@ export function useChat() {
           avatar: logo,
         });
         console.log("labelCategory", cat);
+        setChatLoading(true);
         // call to get resolution
         const response = await services.getResolutionCall(cat);
         console.info("Response", response);
+        setChatLoading(false);
         if (response?.status === 400) {
-          // ADD HERE CREATE TICKET
           addMessage({
             id: "8",
-            content: "Would you like to create a ticket?",
+            content: "Unfortunately, we could not find any matching results",
             avatar: logo,
           });
-        } else { 
+          addMessage({
+            id: "9",
+            content: "We would like to help you resolve the resolve",
+            avatar: logo,
+          });
+          addMessage({
+            id: "10",
+            content: "Would you like to report the Issue?",
+            avatar: logo,
+            labels: ["Yes", "No"],
+            onLabelClick: handleTicketLabel,
+          });
+        } else {
           addMessage({
             id: "8",
             content: response,
             avatar: logo,
           });
         }
-
       } else {
         addMessage({
           id: "7",
@@ -138,6 +156,61 @@ export function useChat() {
       //       onSelectOption: handleSelectInput,
       //     });
       //   }
+    } else if (category === "ticket") {
+      addMessage({
+        id: "20",
+        content: label,
+        isUser: true,
+      });
+      if (label?.toLowerCase() === "yes") {
+        addMessage({
+          id: "21",
+          content:
+            "For reporting this issue, we would like to know some additional details",
+          avatar: logo,
+        });
+        addMessage({
+          id: "22",
+          content:
+            "Please select the level of impact the issue is having on your customers",
+          avatar: logo,
+          labels: ["High", "Normal", "Low"],
+          onLabelClick: handleImpactLabel,
+        });
+      } else {
+        addMessage({
+          id: "21",
+          content: "No worries!!. Do reach out to us in case of any queries",
+          avatar: logo,
+        });
+      }
+    } else if (category === "impact") {
+      addMessage({
+        id: "23",
+        content: label,
+        isUser: true,
+      });
+      addMessage({
+        id: "24",
+        content: "What priority would you like to assign to this issue?",
+        avatar: logo,
+        labels: ["P1", "P2", "P3"],
+        onLabelClick: handlePriorityLabel,
+      });
+    } else if (category === "priority") {
+      addMessage({
+        id: "25",
+        content: label,
+        isUser: true,
+      });
+      addMessage({
+        id: "26",
+        content:
+          "Thank you for providing the details. Please wait while we process the issue.",
+        avatar: logo,
+        labels: ["P1", "P2", "P3"],
+        onLabelClick: handlePriorityLabel,
+      });
     }
   }, []);
 
@@ -189,6 +262,5 @@ export function useChat() {
     onLabelClick,
     chatLoading,
     setChatLoading,
-
   };
 }

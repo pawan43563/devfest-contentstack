@@ -5,7 +5,6 @@
 import daisyui from "daisyui";
 import tailwindcssAnimate from "tailwindcss-animate";
 
-
 import daisyui from "daisyui";
 export default {
   darkMode: ["class"],

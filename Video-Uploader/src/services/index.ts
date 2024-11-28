@@ -53,7 +53,7 @@ const handleVideoUpload = async (formData) => {
     const videoRes: any = await videoFeedbackCall(formData);
     const audioRes: any = await audioFeedbackCall(formData);
     if (audioRes?.success && videoRes) {
-      const labelOptions = ["Launch", "Marketplace App", "CMS", "Automate"]
+      const labelOptions = ["Launch", "Marketplace App", "CMS", "Automate"];
 
       let foundLabel;
       if (videoRes?.value !== "undefined") {
@@ -74,30 +74,41 @@ const handleVideoUpload = async (formData) => {
   }
 };
 
-
-const resolutionChecker = ( data ) => {
+const resolutionChecker = (data) => {
   try {
-    const ignoreWords = ["Unfortunately", "does not match", "I'm sorry", "I apologize"];
-    if (ignoreWords?.find((word) => data?.includes(word))) {
+    const ignoreWords = [
+      "unfortunately",
+      "does not match",
+      "apologize",
+      "sorry",
+      "I'm sorry",
+      "I apologize",
+    ];
+    if (
+      ignoreWords?.find(
+        (word) =>
+          data?.includes(word.toLocaleLowerCase()) || data?.includes(word)
+      )
+    ) {
       return {
-        status: 400
-      }
-    } 
+        status: 400,
+      };
+    }
     return data;
-  } catch(error) {
+  } catch (error) {
     console.info("Error inside resolutionChecker", error);
     return {
-      status: 400
-    }
+      status: 400,
+    };
   }
-}
+};
 
 const getResolutionCall = async (label: any) =>
   fetch("http://localhost:3000/feedback/chat?userId=123", {
     method: "POST",
     body: JSON.stringify({
-      "issueLabel": label
-    })
+      issueLabel: label,
+    }),
   })
     .then((res) => {
       return res.text();
@@ -112,7 +123,6 @@ const getResolutionCall = async (label: any) =>
         success: false,
       };
     });
-
 
 const services = {
   handleVideoUpload,
