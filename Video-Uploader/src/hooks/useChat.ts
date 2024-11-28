@@ -248,10 +248,12 @@ export function useChat() {
       setPreviewData((prevData) => ({...prevData, ...ticketJSON}));
       if (true) {
         setChatLoading(false);
-        // addMessage({
-        //   id: "30",
-
-        // })
+        addMessage({
+          id: "30",
+          content: "",
+          avatar: logo,
+          isPreview: true,
+        });
       }
     }
   }, []);
