@@ -25,17 +25,35 @@ export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [chatLoading, setChatLoading] = useState(false);
   const [previewData, setPreviewData] = useState<any>({});
+  const [isCreateTicket, setIsCreateTicket] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log("Preview Data", previewData);
-  }, [previewData]);
-
-  const createATicket = async () => {
-    console.info("Preview Data in func", previewData);
-    const response = await services.createTicket(previewData, "user123");
-    console.info("Response", response);
-  };
+    console.log("Preview Data", previewData, isCreateTicket);
+    const fn = async () => {
+      if (isCreateTicket) {
+        const res: any = await services.createTicket(previewData, "user123");
+        console.info("Response", res);
+        setChatLoading(false);
+        if (!res?.error) {
+          addMessage({
+            id: uuidv4(),
+            content: `Ticket Created Successfully with Jira Ticket Id: ${res?.ticket?.id} and Jira Ticket Key: ${res?.ticket?.key}`,
+            avatar: logo,
+          });
+        } else {
+          addMessage({
+            id: uuidv4(),
+            content:
+              "Some Error Occurred while processing the request. Please Try Again!!",
+            avatar: logo,
+          });
+        }
+      }
+      setIsCreateTicket(false);
+    };
+    fn();
+  }, [isCreateTicket]);
 
   const loadingDelay = () => {
     setChatLoading(true);
@@ -290,6 +308,7 @@ export function useChat() {
             id: uuidv4(),
             content:
               "Are the above details provided in the Ticket Preview correct?",
+            avatar: logo,
             labels: ["Yes", "No"],
             onLabelClick: handleTicketCreate,
           });
@@ -308,25 +327,7 @@ export function useChat() {
           });
           setChatLoading(true);
           // --------------- API call to create ticket
-          console.info("Preview Data", previewData);
-          createATicket();
-
-          if (true) {
-            setChatLoading(false);
-            addMessage({
-              id: uuidv4(),
-              content: "Ticket Created Successfully. The Jira Ticket Id is --",
-              avatar: logo,
-            });
-          } else {
-            setChatLoading(false);
-            addMessage({
-              id: uuidv4(),
-              content:
-                "Some Error Occurred while processing the request. Please Try Again!!",
-              avatar: logo,
-            });
-          }
+          setIsCreateTicket(true);
         } else {
           // ------ some data is wrong in preview and user need to modify (negative)
           addMessage({
@@ -340,7 +341,6 @@ export function useChat() {
     },
     [
       addMessage,
-      createATicket,
       handleImpactLabel,
       handleNoLabelData,
       handlePriorityLabel,
@@ -348,6 +348,7 @@ export function useChat() {
       handleSelectInput,
       handleTicketCreate,
       previewData,
+      loadingDelay,
     ]
   );
 
