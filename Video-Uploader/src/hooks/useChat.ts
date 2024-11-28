@@ -21,16 +21,16 @@ interface Message {
 
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [labelCategory, setLabelCategory] = useState("");
+  const [chatLoading, setChatLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleSelectInput = (label) => onLabelClick(label, "select");
 
-  useEffect(() => {
-    console.info("labelC", labelCategory)
-  }, [labelCategory])
+  const addMessage = useCallback((newMessage: Message) => {
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  }, []);
 
-  const onLabelClick = useCallback( async (label, category, cat) => {
+  const onLabelClick = useCallback(async(label, category, cat?) => {
     if (category === "init") {
       addMessage({
         id: "2",
@@ -116,10 +116,6 @@ export function useChat() {
     }
   }, []);
 
-  const addMessage = useCallback((newMessage: Message) => {
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-  }, []);
-
   const sendMessage = useCallback(
     async (content: string) => {
       // Add user message
@@ -166,6 +162,8 @@ export function useChat() {
     scrollToBottom,
     addMessage,
     onLabelClick,
-    setLabelCategory,
+    chatLoading,
+    setChatLoading,
+
   };
 }

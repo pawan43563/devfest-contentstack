@@ -53,12 +53,19 @@ const handleVideoUpload = async (formData) => {
     const videoRes: any = await videoFeedbackCall(formData);
     const audioRes: any = await audioFeedbackCall(formData);
     if (audioRes?.success && videoRes) {
+
       const labelOptions = ["Launch", "Marketplace App", "CMS", "Automate"]
+
+
       let foundLabel;
       if (videoRes?.value !== "undefined") {
-        foundLabel = labelOptions.find(label => videoRes?.value?.toLowerCase().includes(label?.toLowerCase()));
+        foundLabel = labelOptions.find((label) =>
+          videoRes?.value?.toLowerCase().includes(label?.toLowerCase())
+        );
       } else if (audioRes?.value !== "undefined") {
-        foundLabel = labelOptions.find(label => audioRes?.value?.toLowerCase().includes(label?.toLowerCase()));
+        foundLabel = labelOptions.find((label) =>
+          audioRes?.value?.toLowerCase().includes(label?.toLowerCase())
+        );
       }
       if (foundLabel) return foundLabel ?? "success";
     } else {

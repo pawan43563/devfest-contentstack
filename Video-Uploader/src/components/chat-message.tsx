@@ -29,6 +29,8 @@ const ChatMessage = memo(function ChatMessage({
   onSelectOption,
 }: ChatMessageProps) {
   const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [labelDisable, setLabelDisable] = useState(false);
+  const [selectDisable, setSelectDisable] = useState(false);
 
   return (
     <div className={`flex gap-3 p-4 ${isUser ? "justify-end" : ""}`}>
@@ -53,7 +55,11 @@ const ChatMessage = memo(function ChatMessage({
                   key={index}
                   variant="ghost"
                   size="default"
-                  onClick={() => onLabelClick && onLabelClick(label)}
+                  disabled={labelDisable}
+                  onClick={() => {
+                    setLabelDisable(true);
+                    onLabelClick && onLabelClick(label);
+                  }}
                   className="text-xs py-1 px-2 rounded-full bg-white hover:bg-gray-100"
                 >
                   {label}
@@ -68,6 +74,7 @@ const ChatMessage = memo(function ChatMessage({
                 size="default"
                 onClick={() => setIsSelectOpen(!isSelectOpen)}
                 className="w-full justify-between"
+                disabled={selectDisable}
               >
                 Select an option
                 <ChevronDown className="h-4 w-4 ml-2" />
@@ -80,6 +87,7 @@ const ChatMessage = memo(function ChatMessage({
                       variant="ghost"
                       size="default"
                       onClick={() => {
+                        setSelectDisable(true);
                         onSelectOption && onSelectOption(option);
                         setIsSelectOpen(false);
                       }}
