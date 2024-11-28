@@ -1,13 +1,11 @@
 import "./App.css";
 import ChatArea from "./components/chatarea";
-import Header from "./components/header/Header";
-import VideoUploader from "./components/uploader/VideoUploader";
+import ContentSpock from "./components/ContentSpock";
 
 function App() {
   return (
-    <>
-      <ChatArea />
-    </>
+    // <ChatArea />
+    <ContentSpock />
   );
 }
 

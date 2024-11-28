@@ -19,5 +19,10 @@
         "mac": "Command+B"
       }
     }
+  },
+  "icons": {
+    "16": "./contentstack.png",
+    "48": "./contentstack.png",
+    "128": "./contentstack.png"
   }
 }

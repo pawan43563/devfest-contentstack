@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import VideoUploader from "../uploader/VideoUploader";
 import "./styles.css";
 
-const labelOptions = [
-  "Marketplace App",
-  "Launch",
-  "Automate"
-]
+const labelOptions = ["Marketplace App", "Launch", "Automate"];
 
 function ChatArea() {
   const [videoFeedback, setVideoFeedback] = useState("");
@@ -85,11 +81,11 @@ function ChatArea() {
     const audioLabel: any = audioFeedback.match(regex);
     const videoLabel: any = videoFeedback.match(regex);
 
-    if (labelOptions?.includes(audioLabel?.[0])){
+    if (labelOptions?.includes(audioLabel?.[0])) {
       setLabel(audioLabel?.[0]);
     } else if (labelOptions?.includes(videoLabel?.[0])) {
       setLabel(videoLabel?.[0]);
-    } 
+    }
   }, [videoFeedback, audioFeedback]);
 
   function sendVideoAndAudio(): void {
@@ -241,7 +237,7 @@ function ChatArea() {
     {
       text: "Contentstack is a modern headless content management system that allows you to manage your content in a flexible and scalable way.",
       type: "bot",
-    }
+    },
   ]);
 
   return (
@@ -274,25 +270,23 @@ function ChatArea() {
             </div>
           </div>
           <div className="label__container">
-            {
-              labelBoolean && (
-                <div className="message user-message">
-                  <p>Is the fetched label correct?</p>
-                  <button onClick={() => setLabelCorrect(true)}>Yes</button>
-                  <button onClick={() => setLabelCorrect(false)}>No</button>
-                  {!labelCorrect && (
-                    <select onChange={handleLabelChange}>
-                      <option value="">Select a label</option>
-                      {labelOptions.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-                  )}
-                </div>
-              )
-            }
+            {labelBoolean && (
+              <div className="message user-message">
+                <p>Is the fetched label correct?</p>
+                <button onClick={() => setLabelCorrect(true)}>Yes</button>
+                <button onClick={() => setLabelCorrect(false)}>No</button>
+                {!labelCorrect && (
+                  <select onChange={handleLabelChange}>
+                    <option value="">Select a label</option>
+                    {labelOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            )}
           </div>
           <div className="ticket-preview">
             <button className="jira-preview-button" onClick={handleOpenOverlay}>
@@ -308,28 +302,6 @@ function ChatArea() {
             </button>
           </div>
           <div className="input-area">
-            {/* {videoPreview && (
-              <div
-                style={{
-                  marginTop: "20px",
-                  border: "1px solid #ccc",
-                  borderRadius: "8px",
-                  padding: "10px",
-                  width: "150px",
-                  height: "100px",
-                }}
-                className="video-preview-container"
-              >
-                <video
-                  src={videoPreview}
-                  controls
-                  style={{
-                    width: "100%",
-                    borderRadius: "8px",
-                  }}
-                ></video>
-              </div>
-            )} */}
             <div className="text-input">
               <input type="text" id="userInput" placeholder="Ask a question" />
               <VideoUploader handleUpload={handleUpload} />
