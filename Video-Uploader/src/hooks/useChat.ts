@@ -66,7 +66,6 @@ export function useChat() {
     setChatLoading(true);
     const response: any = await services.getResolutionCall(label);
     setChatLoading(false);
-    console.info("Response", response);
     if (response?.status === 400) {
       handleNoLabelData();
     } else {
@@ -91,6 +90,26 @@ export function useChat() {
     onLabelClick(label, "priority");
     setPreviewData((prevData) => ({ ...prevData, Priority: label }));
   };
+
+  const handleResolveIssue = (label) => {
+    console.log("label", label);
+    if (label.toLowerCase() === "yes") {
+      addMessage({
+        id: "15",
+        content: "Hurray!! We're glad that we were able to solve your Query.",
+        avatar: logo,
+      });
+    } else {
+      // here handle that 
+      addMessage({
+        id: "10",
+        content: "Would you like to report the Issue?",
+        avatar: logo,
+        labels: ["Yes", "No"],
+        onLabelClick: handleTicketLabel,
+      });
+    }
+  }
 
   const onLabelClick = useCallback(async (label, category, cat?) => {
     if (category === "init") {
@@ -124,7 +143,6 @@ export function useChat() {
           content: "Please wait a moment!. we are processing the input",
           avatar: logo,
         });
-        console.log("labelCategory", cat);
         setChatLoading(true);
         // call to get resolution
         const response: any = await services.getResolutionCall(cat);
@@ -137,6 +155,13 @@ export function useChat() {
             id: "8",
             content: response,
             avatar: logo,
+          });
+          addMessage({
+            id: "9",
+            content: "Does this resolve your Question?",
+            labels: ["Yes", "No"],
+            avatar: logo,
+            onLabelClick: handleResolveIssue,
           });
         }
       } else {

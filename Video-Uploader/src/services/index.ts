@@ -84,6 +84,7 @@ const resolutionChecker = (data) => {
       "I'm sorry",
       "I apologize",
       "There isn't specific troubleshooting",
+      "analysis is missing"
     ];
     if (
       ignoreWords?.find(
