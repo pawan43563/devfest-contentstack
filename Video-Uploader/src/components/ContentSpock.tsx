@@ -26,6 +26,7 @@ export default function ContentSpock() {
   const [videoAttached, setVideoAttached] = useState(false);
   const [formData, setFormData] = useState(new FormData());
   const [videoPreview, setVideoPreview] = useState("");
+  const [input, setInput] = useState("");
 
   const ref: any = useRef(null);
 
@@ -104,6 +105,21 @@ export default function ContentSpock() {
         });
       }
     }
+    else if (input.trim()){
+      addMessage({
+        id: uuidv4(),
+        content: input,
+        isUser: true,
+      });
+      setInput("");
+      setChatLoading(true);
+      addMessage({
+        id: uuidv4(),
+        content: "We'll be implementing this feature soon!",
+        avatar: logo,
+      });
+      setChatLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -153,6 +169,8 @@ export default function ContentSpock() {
         }
         messages={messages}
         setMessages={setMessages}
+        input={input}
+        setInput={setInput}
       />
     </div>
   );

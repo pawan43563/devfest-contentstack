@@ -24,8 +24,9 @@ export function ChatInput({
   removeVideo,
   setMessages,
   messages,
+  input, 
+  setInput,
 }: any) {
-  const [input, setInput] = useState("");
   const [files, setFiles] = useState<any>([]);
 
   const videoInputRef = useRef<HTMLInputElement>(null);
