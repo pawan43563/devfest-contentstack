@@ -93,14 +93,23 @@ export function useChat() {
   };
 
   const handleResolveIssue = (label) => {
-    console.log("label", label);
     if (label.toLowerCase() === "yes") {
       addMessage({
         id: "15",
+        content: label,
+        isUser: true,
+      });
+      addMessage({
+        id: "16",
         content: "Hurray!! We're glad that we were able to solve your Query.",
         avatar: logo,
       });
     } else {
+      addMessage({
+        id: "16",
+        content: label,
+        isUser: true,
+      });
       // here handle that 
       addMessage({
         id: "10",
