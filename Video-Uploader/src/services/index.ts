@@ -83,6 +83,7 @@ const resolutionChecker = (data) => {
       "sorry",
       "I'm sorry",
       "I apologize",
+      "There isn't specific troubleshooting",
     ];
     if (
       ignoreWords?.find(
@@ -104,7 +105,7 @@ const resolutionChecker = (data) => {
 };
 
 const getResolutionCall = async (label: any) =>
-  fetch("http://localhost:3000/feedback/chat?userId=123", {
+  fetch("http://localhost:3000/feedback/chat?userId=user123", {
     method: "POST",
     body: JSON.stringify({
       issueLabel: label,

@@ -1,11 +1,13 @@
 import { Body, Controller, Post, Query, Res, UseInterceptors } from '@nestjs/common';
 import { Response } from 'express';
 import * as fs from 'fs/promises';
+import * as path from 'path';
 import { existsSync, readFileSync } from 'fs';
 import { AudioAnalysisService } from '../services/audio.analysis.service';
 import { VideoAnalysisService } from '../services/video.analysis.service';
 import { MultipartInterceptor } from 'frameworks/middlewares/interceptors/multipart';
 import { ChatAnalysisService } from 'src/services/chat.analysis.service';
+import { DEFAULT_CHAT_DIR } from 'frameworks/utils/resources/app.constants';
 
 @Controller('/feedback')
 export class FeedbackController {
@@ -95,23 +97,16 @@ export class FeedbackController {
         try {
             parsedBody = JSON.parse(body);
         } catch (error) {
-            console.error("Failed to parse body:", error);
-            // Handle the error as needed, e.g., set parsedBody to null or throw an error
-            parsedBody = null; // or throw new Error("Invalid JSON format");
+            parsedBody = null; 
         }
     } else {
         parsedBody = body; // If body is not a string, use it as is
     }
     if (!parsedBody?.issueLabel) {
-      issueLabel = await this.chatAnalysisService.extractLabel(fileData);
-      if (!issueLabel) {
-        return response
-          .status(200)
-          .send(
-            'Could not understand what this issue is from. Can you share the label?',
-          );
-      }
-      return response.status(200).send({ issueLabel });
+      const filePath = path.join(DEFAULT_CHAT_DIR,`feedback_${userId}.json`);
+      console.info("file", filePath);
+      const fileContent = readFileSync(filePath, 'utf-8');
+      return response.status(200).send({ fileContent });
     } else {
       issueLabel = parsedBody.issueLabel;
       await this.appendToJsonFile(filePath, 'issueLabel', issueLabel);

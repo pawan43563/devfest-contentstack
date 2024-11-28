@@ -55,7 +55,7 @@ export class ChatAnalysisService {
       // add the source from documentation link
       KBResponse = await this.analyzeWithGPT35(KBResponse, body.summary);
     }
-
+    console.info("kb", KBResponse)
     const summary = extractSummary(fileData?.audioFeedback);
     // use the data as a context in chatgpt
     const analysisResponse = await this.analyzeWithGPT35(summary, KBResponse);
@@ -64,7 +64,6 @@ export class ChatAnalysisService {
   }
 
   private async analyzeWithGPT35(body: string, KBResponse: any): Promise<any> {
-    console.info(body, 'body');
     try {
       const messages = [
         {
