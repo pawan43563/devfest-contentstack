@@ -17,12 +17,42 @@ interface Message {
   onSelectOption?: (label: string) => void;
 }
 
-// addMessage({id: "", content:""})
-
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [chatLoading, setChatLoading] = useState(false);
+  const [previewData, setPreviewData] = useState<any>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const loadingDelay = () => {
+    setChatLoading(true);
+    setTimeout(() => {}, 500);
+    setChatLoading(false);
+  };
+
+  const handleTicketLabel = (label) => onLabelClick(label, "ticket");
+
+  const handleNoLabelData = () => {
+    loadingDelay();
+    addMessage({
+      id: "8",
+      content: "Unfortunately, we could not find any matching results",
+      avatar: logo,
+    });
+    loadingDelay();
+    addMessage({
+      id: "9",
+      content: "We would like to help you resolve the resolve",
+      avatar: logo,
+    });
+    loadingDelay();
+    addMessage({
+      id: "10",
+      content: "Would you like to report the Issue?",
+      avatar: logo,
+      labels: ["Yes", "No"],
+      onLabelClick: handleTicketLabel,
+    });
+  };
 
   const handleSelectInput = async (label) => {
     // make a call and add Message
@@ -33,15 +63,12 @@ export function useChat() {
       avatar: logo,
     });
     // call to get resolution
-    const response = await services.getResolutionCall(label);
+    setChatLoading(true);
+    const response: any = await services.getResolutionCall(label);
+    setChatLoading(false);
     console.info("Response", response);
     if (response?.status === 400) {
-      // ADD HERE CREATE TICKET
-      addMessage({
-        id: "8",
-        content: "Would you like to create a ticket?",
-        avatar: logo,
-      });
+      handleNoLabelData();
     } else {
       addMessage({
         id: "8",
@@ -55,11 +82,15 @@ export function useChat() {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
   }, []);
 
-  const handleTicketLabel = (label) => onLabelClick(label, "ticket");
+  const handleImpactLabel = (label) => {
+    onLabelClick(label, "impact");
+    setPreviewData((prevData) => ({ ...prevData, Impact: label }));
+  };
 
-  const handleImpactLabel = (label) => onLabelClick(label, "impact");
-
-  const handlePriorityLabel = (label) => onLabelClick(label, "priority");
+  const handlePriorityLabel = (label) => {
+    onLabelClick(label, "priority");
+    setPreviewData((prevData) => ({ ...prevData, Priority: label }));
+  };
 
   const onLabelClick = useCallback(async (label, category, cat?) => {
     if (category === "init") {
@@ -96,27 +127,11 @@ export function useChat() {
         console.log("labelCategory", cat);
         setChatLoading(true);
         // call to get resolution
-        const response = await services.getResolutionCall(cat);
+        const response: any = await services.getResolutionCall(cat);
         console.info("Response", response);
         setChatLoading(false);
         if (response?.status === 400) {
-          addMessage({
-            id: "8",
-            content: "Unfortunately, we could not find any matching results",
-            avatar: logo,
-          });
-          addMessage({
-            id: "9",
-            content: "We would like to help you resolve the resolve",
-            avatar: logo,
-          });
-          addMessage({
-            id: "10",
-            content: "Would you like to report the Issue?",
-            avatar: logo,
-            labels: ["Yes", "No"],
-            onLabelClick: handleTicketLabel,
-          });
+          handleNoLabelData();
         } else {
           addMessage({
             id: "8",
@@ -139,23 +154,6 @@ export function useChat() {
         content: label,
         isUser: true,
       });
-      //   ------ make an api call and update the messages
-      // --------------------------------------------------
-      //   if (label?.toLowerCase()?.includes("yes")) {
-      //     addMessage({
-      //       id: "9",
-      //       content: "Please wait a moment!. we are processing the input",
-      //       avatar: logo,
-      //     });
-      //   } else {
-      //     addMessage({
-      //       id: "9",
-      //       content: "Please select a label from the following",
-      //       avatar: logo,
-      //       selectOptions: ["Launch", "Marketplace", "CMS", "Automate"],
-      //       onSelectOption: handleSelectInput,
-      //     });
-      //   }
     } else if (category === "ticket") {
       addMessage({
         id: "20",
@@ -163,12 +161,14 @@ export function useChat() {
         isUser: true,
       });
       if (label?.toLowerCase() === "yes") {
+        loadingDelay();
         addMessage({
           id: "21",
           content:
             "For reporting this issue, we would like to know some additional details",
           avatar: logo,
         });
+        loadingDelay();
         addMessage({
           id: "22",
           content:
@@ -203,14 +203,14 @@ export function useChat() {
         content: label,
         isUser: true,
       });
+      loadingDelay();
       addMessage({
         id: "26",
         content:
           "Thank you for providing the details. Please wait while we process the issue.",
         avatar: logo,
-        labels: ["P1", "P2", "P3"],
-        onLabelClick: handlePriorityLabel,
       });
+      // --------------- make jira API call
     }
   }, []);
 
@@ -262,5 +262,6 @@ export function useChat() {
     onLabelClick,
     chatLoading,
     setChatLoading,
+    handleSelectInput,
   };
 }

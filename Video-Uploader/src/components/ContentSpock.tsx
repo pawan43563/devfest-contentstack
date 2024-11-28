@@ -19,6 +19,7 @@ export default function ContentSpock() {
     onLabelClick,
     chatLoading,
     setChatLoading,
+    handleSelectInput,
   } = useChat();
 
   const [videoAttached, setVideoAttached] = useState(false);
@@ -52,32 +53,6 @@ export default function ContentSpock() {
     return;
   };
   const removeVideo = () => setVideoAttached(false);
-
-  const handleSelectInput = async (label) => {
-    onLabelClick(label, "select");
-    addMessage({
-      id: "7",
-      content: "Please wait a moment!. we are processing the input",
-      avatar: logo,
-    });
-    // call to get resolution
-    const response = await services.getResolutionCall(label);
-    console.info("Response", response);
-    if (response?.status === 400) {
-      // ADD HERE CREATE TICKET
-      addMessage({
-        id: "8",
-        content: "Would you like to create a ticket?",
-        avatar: logo,
-      });
-    } else {
-      addMessage({
-        id: "8",
-        content: response,
-        avatar: logo,
-      });
-    }
-  };
 
   const handleSubmit = async () => {
     if (videoAttached && formData) {
