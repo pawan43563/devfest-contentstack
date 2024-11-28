@@ -14,7 +14,7 @@ ContentSpock harnesses advanced AI to transform the support experience by automa
 2. #### Set-Up the backend server
    
 
-    i. Navigate to the backend folder and run the following commands:
+    i. Navigate to the backend folder with the following command:
 
          cd contentspock-backend 
 
