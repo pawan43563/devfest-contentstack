@@ -89,7 +89,19 @@ export class FeedbackController {
     // check if issueLabel is present in the body
     // if not then extract it from the file and ask user to confirm
     let issueLabel = null;
-    let parsedBody = JSON.parse(body);
+    let parsedBody;
+
+    if (typeof body === 'string') {
+        try {
+            parsedBody = JSON.parse(body);
+        } catch (error) {
+            console.error("Failed to parse body:", error);
+            // Handle the error as needed, e.g., set parsedBody to null or throw an error
+            parsedBody = null; // or throw new Error("Invalid JSON format");
+        }
+    } else {
+        parsedBody = body; // If body is not a string, use it as is
+    }
     if (!parsedBody?.issueLabel) {
       issueLabel = await this.chatAnalysisService.extractLabel(fileData);
       if (!issueLabel) {

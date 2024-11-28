@@ -53,9 +53,7 @@ const handleVideoUpload = async (formData) => {
     const videoRes: any = await videoFeedbackCall(formData);
     const audioRes: any = await audioFeedbackCall(formData);
     if (audioRes?.success && videoRes) {
-
       const labelOptions = ["Launch", "Marketplace App", "CMS", "Automate"]
-
 
       let foundLabel;
       if (videoRes?.value !== "undefined") {
@@ -79,7 +77,7 @@ const handleVideoUpload = async (formData) => {
 
 const resolutionChecker = ( data ) => {
   try {
-    const ignoreWords = ["Unfortunately", "does not match"];
+    const ignoreWords = ["Unfortunately", "does not match", "I'm sorry", "I apologize"];
     if (ignoreWords?.find((word) => data?.includes(word))) {
       return {
         status: 400

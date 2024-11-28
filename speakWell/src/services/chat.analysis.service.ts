@@ -47,7 +47,6 @@ export class ChatAnalysisService {
     const matchingFile = files.find((file) =>
       file.includes(toLowercaseAndRemoveSpaces(body.issueLabel)),
     );
-
     if (matchingFile) {
       const filePath = path.join(folderPath, matchingFile);
       KBResponse = readFileSync(filePath, 'utf-8');
@@ -60,7 +59,6 @@ export class ChatAnalysisService {
     const summary = extractSummary(fileData?.audioFeedback);
     // use the data as a context in chatgpt
     const analysisResponse = await this.analyzeWithGPT35(summary, KBResponse);
-    console.info(analysisResponse, 'analysisResponse');
 
     return analysisResponse;
   }
@@ -83,7 +81,7 @@ export class ChatAnalysisService {
           content: [
             {
               type: 'text',
-              text: `Please analyze the following information: ${JSON.stringify(body)} and provide a detailed solution with step by step from only if relevant solution is present inside the context. Don't give general troubleshooting steps. Don't mention 'context' in the response. If you do give a solution mention 'ContentSpock' as the title.`,
+              text: `Please analyze the following information: ${JSON.stringify(body)} and provide a detailed solution with step by step if relevant solution is present inside the context. Don't give general troubleshooting steps. Don't mention 'context' in the response. If you do give a solution mention 'ContentSpock' as the title.`,
             },
           ],
         },
