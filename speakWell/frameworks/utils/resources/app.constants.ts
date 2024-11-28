@@ -32,5 +32,5 @@ export enum MODELS {
 export const JIRAFILEMAPPER = {
   "CS": "launch",
   "CLOUD": "Launch",
-  "MKT": "Marketplace"
+  "MKT": "marketplaceapp"
 }

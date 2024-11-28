@@ -30,6 +30,7 @@ const ChatMessage = memo(function ChatMessage({
   selectOptions,
   onSelectOption,
   isPreview,
+  previewData,
 }: any) {
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [labelDisable, setLabelDisable] = useState(false);
@@ -55,7 +56,7 @@ const ChatMessage = memo(function ChatMessage({
             <PreviewTicket
               title="Here's a quick preview of Jira Ticket Content"
               content="Click on the component to View Details"
-              onClick={() => {}} // -----------handle preview overlay here
+              previewData={previewData} // -----------handle preview overlay here
             />
           )}
           {labels && labels.length > 0 && (

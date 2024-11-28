@@ -26,7 +26,7 @@ const parseToJSON = (text) => {
 };
 
 function extractDetails(input) {
-  const cleanedInput = input.replace(/[^a-zA-Z0-9:.\s\n]/g, '');
+  const cleanedInput = input.replace(/[^a-zA-Z0-9:.\s\n]/g, "");
 
   const fields: any = {};
 
@@ -39,7 +39,9 @@ function extractDetails(input) {
   if (summaryMatch) fields.summary = summaryMatch[1].trim();
 
   // Step 4: Extract Description
-  const descriptionMatch = cleanedInput.match(/Description:\s*([\s\S]*?)(?=\nLabel:|\n?$)/);
+  const descriptionMatch = cleanedInput.match(
+    /Description:\s*([\s\S]*?)(?=\nLabel:|\n?$)/
+  );
   if (descriptionMatch) fields.description = descriptionMatch[1].trim();
 
   // Step 5: Extract Label
@@ -51,7 +53,7 @@ function extractDetails(input) {
 
 const utils = {
   parseToJSON,
-  extractDetails
+  extractDetails,
 };
 
 export default utils;

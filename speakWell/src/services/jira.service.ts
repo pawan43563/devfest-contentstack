@@ -24,6 +24,8 @@ export class JiraService {
   }
 
   async createTicket(ticketDetails: any): Promise<any> {
+    console.info('Ticket Details', ticketDetails);
+    ticketDetails = JSON.parse(ticketDetails);
     const url = `${this.baseUrl}/rest/api/2/issue`;
     const auth = Buffer.from(`${this.email}:${this.apiToken}`).toString(
       'base64',
@@ -32,12 +34,14 @@ export class JiraService {
     const payload = {
       fields: {
         project: {
-          key: ticketDetails.projectKey,
+          key: ticketDetails?.label?.toLowerCase()?.includes('marketplace')
+            ? 'MKT'
+            : 'CS',
         },
-        summary: ticketDetails.summary,
-        description: ticketDetails.description,
+        summary: ticketDetails.title,
+        description: ticketDetails.summary,
         issuetype: {
-          name: ticketDetails.issueType,
+          name: ticketDetails.issueType || 'Task',
         },
       },
     };
@@ -51,6 +55,7 @@ export class JiraService {
       });
       return response.data;
     } catch (error) {
+      console.info('Error creating Jira ticket:', error?.response?.data);
       throw new HttpException(
         {
           message: 'Failed to create Jira ticket',
@@ -63,8 +68,10 @@ export class JiraService {
 
   async getTicketDetails(ticketId: string): Promise<any> {
     const url = `${this.baseUrl}/rest/api/2/issue/${ticketId}`;
-    const auth = Buffer.from(`${this.email}:${this.apiToken}`).toString('base64');
-  
+    const auth = Buffer.from(`${this.email}:${this.apiToken}`).toString(
+      'base64',
+    );
+
     try {
       const response = await axios.get(url, {
         headers: {
@@ -83,13 +90,14 @@ export class JiraService {
       );
     }
   }
-  
+
   async addCommentToTicket(ticketId: string, comment: string): Promise<void> {
     const url = `${this.baseUrl}/rest/api/2/issue/${ticketId}`;
-    const auth = Buffer.from(`${this.email}:${this.apiToken}`).toString('base64');
-  
-    try {
+    const auth = Buffer.from(`${this.email}:${this.apiToken}`).toString(
+      'base64',
+    );
 
+    try {
       const bodyData = `{
         "body": {
           "content": [
@@ -107,7 +115,6 @@ export class JiraService {
           "version": 1
         }
       }`;
-      
 
       const response: any = await axios.post(url, bodyData, {
         headers: {
@@ -115,10 +122,10 @@ export class JiraService {
           'Content-Type': 'application/json',
         },
       });
-      console.log("response", response)
+      console.log('response', response);
       return response.body;
     } catch (error) {
-      console.log("error", error.response?.statusText);
+      console.log('error', error.response?.statusText);
       throw new HttpException(
         {
           message: 'Failed to add comment to ticket',
@@ -128,5 +135,4 @@ export class JiraService {
       );
     }
   }
-
 }

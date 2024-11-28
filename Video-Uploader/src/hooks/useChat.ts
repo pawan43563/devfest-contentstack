@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import logo from "../assets/contentstack.png";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import services from "../services";
 import utils from "../utils";
 
@@ -15,13 +15,42 @@ interface Message {
   selectOptions?: string[];
   onSelectOption?: (label: string) => void;
   isPreview?: boolean;
+  previewData?: any;
 }
 
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [chatLoading, setChatLoading] = useState(false);
   const [previewData, setPreviewData] = useState<any>({});
+  const [isCreateTicket, setIsCreateTicket] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    console.log("Preview Data", previewData, isCreateTicket);
+    const fn = async () => {
+      if (isCreateTicket) {
+        const res: any = await services.createTicket(previewData, "user123");
+        console.info("Response", res);
+        setChatLoading(false);
+        if (!res?.error) {
+          addMessage({
+            id: uuidv4(),
+            content: `Ticket Created Successfully with Jira Ticket Id: ${res?.ticket?.id} and Jira Ticket Key: ${res?.ticket?.key}`,
+            avatar: logo,
+          });
+        } else {
+          addMessage({
+            id: uuidv4(),
+            content:
+              "Some Error Occurred while processing the request. Please Try Again!!",
+            avatar: logo,
+          });
+        }
+      }
+      setIsCreateTicket(false);
+    };
+    fn();
+  }, [isCreateTicket]);
 
   const loadingDelay = () => {
     setChatLoading(true);
@@ -113,13 +142,12 @@ export function useChat() {
         avatar: logo,
       });
     } else {
-
       addMessage({
         id: uuidv4(),
         content: label,
         isUser: true,
       });
-      // here handle that 
+      // here handle that
 
       addMessage({
         id: uuidv4(),
@@ -131,196 +159,196 @@ export function useChat() {
     }
   };
 
-  const onLabelClick = useCallback(async (label, category, cat?) => {
-    if (category === "init") {
-      addMessage({
-        id: uuidv4(),
-        content: label,
-        isUser: true,
-      });
-      if (label?.toLowerCase()?.includes("yes")) {
+  const onLabelClick = useCallback(
+    async (label, category, cat?) => {
+      if (category === "init") {
         addMessage({
           id: uuidv4(),
-          content: "Report us through Chat or Video Recording",
-          avatar: logo,
+          content: label,
+          isUser: true,
         });
-      } else {
-        addMessage({
-          id: uuidv4(),
-          content: "Do reach out to us in case of any queries",
-          avatar: logo,
-        });
-      }
-    } else if (category === "label") {
-      addMessage({
-        id: uuidv4(),
-        content: label,
-        isUser: true,
-      });
-      if (label?.toLowerCase()?.includes("yes")) {
-        addMessage({
-          id: uuidv4(),
-          content: "Please wait a moment!. we are processing the input",
-          avatar: logo,
-        });
-        setChatLoading(true);
-        // call to get resolution
-        const response: any = await services.getResolutionCall(cat);
-        console.info("Response", response);
-        setChatLoading(false);
-        if (response?.status === 400) {
-          handleNoLabelData();
+        if (label?.toLowerCase()?.includes("yes")) {
+          addMessage({
+            id: uuidv4(),
+            content: "Report us through Chat or Video Recording",
+            avatar: logo,
+          });
         } else {
           addMessage({
             id: uuidv4(),
-            content: response,
+            content: "Do reach out to us in case of any queries",
             avatar: logo,
-          });
-          addMessage({
-            id: uuidv4(),
-            content: "Does this resolve your Question?",
-            labels: ["Yes", "No"],
-            avatar: logo,
-            onLabelClick: handleResolveIssue,
           });
         }
-      } else {
+      } else if (category === "label") {
         addMessage({
           id: uuidv4(),
-          content: "Please select a label from the following",
-          avatar: logo,
-          selectOptions: ["Launch", "Marketplace App", "CMS", "Automate"],
-          onSelectOption: handleSelectInput,
+          content: label,
+          isUser: true,
         });
-      }
-    } else if (category === "select") {
-      addMessage({
-        id: uuidv4(),
-        content: label,
-        isUser: true,
-      });
-    } else if (category === "ticket") {
-      addMessage({
-        id: uuidv4(),
-        content: label,
-        isUser: true,
-      });
-      if (label?.toLowerCase() === "yes") {
-        loadingDelay();
-        addMessage({
-          id: uuidv4(),
-          content:
-            "For reporting this issue, we would like to know some additional details",
-          avatar: logo,
-        });
-        loadingDelay();
-        addMessage({
-          id: uuidv4(),
-          content:
-            "Please select the level of impact the issue is having on your customers",
-          avatar: logo,
-          labels: ["High", "Normal", "Low"],
-          onLabelClick: handleImpactLabel,
-        });
-      } else {
-        addMessage({
-          id: uuidv4(),
-          content: "No worries!!. Do reach out to us in case of any queries",
-          avatar: logo,
-        });
-      }
-    } else if (category === "impact") {
-      addMessage({
-        id: uuidv4(),
-        content: label,
-        isUser: true,
-      });
-      addMessage({
-        id: uuidv4(),
-        content: "What priority would you like to assign to this issue?",
-        avatar: logo,
-        labels: ["P1", "P2", "P3"],
-        onLabelClick: handlePriorityLabel,
-      });
-    } else if (category === "priority") {
-      addMessage({
-        id: uuidv4(),
-        content: label,
-        isUser: true,
-      });
-      loadingDelay();
-      addMessage({
-        id: uuidv4(),
-        content:
-          "Thank you for providing the details. Please wait while we process the issue.",
-        avatar: logo,
-      });
-      // setChatLoading(true);
-      // --------------- make API call to /feedback/chaat to get details and add to previewData state
-
-      const ticketSummary = await services.getTicketSummary('user123');
-      console.info("Ticket Summary", ticketSummary);
-      const ticketJSON = utils.extractDetails(ticketSummary.ticket);
-      ticketJSON.time = new Date().toLocaleString();
-      console.log({...previewData, ...ticketJSON})
-      setPreviewData((prevData) => ({...prevData, ...ticketJSON}));
-      if (true) {
-        setChatLoading(false);
-        addMessage({
-          id: "30",
-          content: "",
-          avatar: logo,
-          isPreview: true,
-        });
-        loadingDelay();
-        addMessage({
-          id: "31",
-          content:
-            "Are the above details provided in the above Ticket Preview correct?",
-          labels: ["Yes", "No"],
-          onLabelClick: handleTicketCreate,
-        });
-      }
-    } else if (category === "createTicket") {
-      addMessage({
-        id: "31",
-        content: label,
-        isUser: true,
-      });
-      if (label?.toLowerCase()?.includes("yes")) {
-        addMessage({
-          id: "32",
-          content: "Please wait while we create a ticket.",
-          avatar: logo,
-        });
-        setChatLoading(true);
-        // --------------- API call to create ticket
-        if (true) {
-          setChatLoading(false);
+        if (label?.toLowerCase()?.includes("yes")) {
           addMessage({
-            id: "33",
-            content: "Ticket Created Successfully. The Jira Ticket Id is --",
+            id: uuidv4(),
+            content: "Please wait a moment!. we are processing the input",
             avatar: logo,
           });
-        } else {
+          setChatLoading(true);
+          // call to get resolution
+          const response: any = await services.getResolutionCall(cat);
+          console.info("Response", response);
           setChatLoading(false);
+          if (response?.status === 400) {
+            handleNoLabelData();
+          } else {
+            addMessage({
+              id: uuidv4(),
+              content: response,
+              avatar: logo,
+            });
+            addMessage({
+              id: uuidv4(),
+              content: "Does this resolve your Question?",
+              labels: ["Yes", "No"],
+              avatar: logo,
+              onLabelClick: handleResolveIssue,
+            });
+          }
+        } else {
           addMessage({
-            id: "33",
+            id: uuidv4(),
+            content: "Please select a label from the following",
+            avatar: logo,
+            selectOptions: ["Launch", "Marketplace App", "CMS", "Automate"],
+            onSelectOption: handleSelectInput,
+          });
+        }
+      } else if (category === "select") {
+        addMessage({
+          id: uuidv4(),
+          content: label,
+          isUser: true,
+        });
+      } else if (category === "ticket") {
+        addMessage({
+          id: uuidv4(),
+          content: label,
+          isUser: true,
+        });
+        if (label?.toLowerCase() === "yes") {
+          loadingDelay();
+          addMessage({
+            id: uuidv4(),
             content:
-              "Some Error Occurred while processing the request. Please Try Again!!",
+              "For reporting this issue, we would like to know some additional details",
+            avatar: logo,
+          });
+          loadingDelay();
+          addMessage({
+            id: uuidv4(),
+            content:
+              "Please select the level of impact the issue is having on your customers",
+            avatar: logo,
+            labels: ["High", "Normal", "Low"],
+            onLabelClick: handleImpactLabel,
+          });
+        } else {
+          addMessage({
+            id: uuidv4(),
+            content: "No worries!!. Do reach out to us in case of any queries",
             avatar: logo,
           });
         }
-      } else {
-        // ------ some data is wrong in preview and user need to modify (negative)
+      } else if (category === "impact") {
         addMessage({
-          id: "32",
-          content: "Do reach out to us in case of any queries",
+          id: uuidv4(),
+          content: label,
+          isUser: true,
+        });
+        addMessage({
+          id: uuidv4(),
+          content: "What priority would you like to assign to this issue?",
+          avatar: logo,
+          labels: ["P1", "P2", "P3"],
+          onLabelClick: handlePriorityLabel,
+        });
+      } else if (category === "priority") {
+        addMessage({
+          id: uuidv4(),
+          content: label,
+          isUser: true,
+        });
+        loadingDelay();
+        addMessage({
+          id: uuidv4(),
+          content:
+            "Thank you for providing the details. Please wait while we process the issue.",
           avatar: logo,
         });
+        setChatLoading(true);
+        const ticketSummary = await services.getTicketSummary("user123");
+        console.info("Ticket Summary", ticketSummary);
+        const ticketJSON = utils.extractDetails(ticketSummary.ticket);
+        ticketJSON.time = new Date().toLocaleString();
+        const modifiedPrevData = { ...previewData, ...ticketJSON };
+        setPreviewData(modifiedPrevData);
+        if (Object.keys(modifiedPrevData)?.length) {
+          setChatLoading(false);
+          addMessage({
+            /// ----------- here preview needs to be handled
+            id: uuidv4(),
+            content: "",
+            avatar: logo,
+            isPreview: true,
+            previewData,
+          });
+          loadingDelay();
+          addMessage({
+            id: uuidv4(),
+            content:
+              "Are the above details provided in the Ticket Preview correct?",
+            avatar: logo,
+            labels: ["Yes", "No"],
+            onLabelClick: handleTicketCreate,
+          });
+        }
+      } else if (category === "createTicket") {
+        addMessage({
+          id: uuidv4(),
+          content: label,
+          isUser: true,
+        });
+        if (label?.toLowerCase()?.includes("yes")) {
+          addMessage({
+            id: uuidv4(),
+            content: "Please wait while we create a ticket.",
+            avatar: logo,
+          });
+          setChatLoading(true);
+          // --------------- API call to create ticket
+          setIsCreateTicket(true);
+        } else {
+          // ------ some data is wrong in preview and user need to modify (negative)
+          addMessage({
+            id: uuidv4(),
+            content:
+              "We would like to inform you that we would add this functionality shortly",
+            avatar: logo,
+          });
+        }
       }
-    }
-  }, []);
+    },
+    [
+      addMessage,
+      handleImpactLabel,
+      handleNoLabelData,
+      handlePriorityLabel,
+      handleResolveIssue,
+      handleSelectInput,
+      handleTicketCreate,
+      previewData,
+      loadingDelay,
+    ]
+  );
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

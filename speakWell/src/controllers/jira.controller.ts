@@ -77,6 +77,7 @@ export class JiraController {
         ticket: result,
       };
     } catch (error) {
+      console.info("Error", error);
       throw new HttpException(
         {
           message: 'Failed to create Jira ticket',
@@ -165,7 +166,6 @@ export class JiraController {
 
       // Check if body.label is present in any filename
       const matchingFile = files.find((file) => file.includes(JIRAFILEMAPPER[projectKey]));
-
       if (matchingFile) {
         filePath = path.join(folderPath, matchingFile);
       } else {

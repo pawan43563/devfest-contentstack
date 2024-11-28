@@ -8,7 +8,7 @@ import logo from "../assets/contentstack.png";
 import { useChat } from "../hooks/useChat";
 import { PreviewTicket } from "./preview-ticket";
 import services from "../services";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export default function ContentSpock() {
   const {
@@ -26,6 +26,7 @@ export default function ContentSpock() {
   const [videoAttached, setVideoAttached] = useState(false);
   const [formData, setFormData] = useState(new FormData());
   const [videoPreview, setVideoPreview] = useState("");
+  const [input, setInput] = useState("");
 
   const ref: any = useRef(null);
 
@@ -103,6 +104,20 @@ export default function ContentSpock() {
           avatar: logo,
         });
       }
+    } else if (input.trim()) {
+      addMessage({
+        id: uuidv4(),
+        content: input,
+        isUser: true,
+      });
+      setInput("");
+      setChatLoading(true);
+      addMessage({
+        id: uuidv4(),
+        content: "We'll be implementing this feature soon!",
+        avatar: logo,
+      });
+      setChatLoading(false);
     }
   };
 
@@ -139,6 +154,7 @@ export default function ContentSpock() {
             selectOptions={message?.selectOptions ?? []}
             onSelectOption={message?.onSelectOption ?? (() => {})}
             isPreview={message?.isPreview ?? false}
+            previewData={message?.previewData ?? {}}
           />
         ))}
         <div ref={messagesEndRef} />
@@ -153,6 +169,8 @@ export default function ContentSpock() {
         }
         messages={messages}
         setMessages={setMessages}
+        input={input}
+        setInput={setInput}
       />
     </div>
   );
