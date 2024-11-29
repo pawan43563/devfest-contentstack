@@ -36,7 +36,7 @@ ContentSpock harnesses advanced AI to transform the support experience by automa
 
          npm run build
    
-         npm run start
+         npm run start:dev
 
     v. The server will start running on port 3000
 
@@ -58,7 +58,7 @@ ContentSpock harnesses advanced AI to transform the support experience by automa
 
       After the build is completed, dist folder will be created inside the contentspock-frontend directory.
 
-    iv. Open Chrome, Goto Extensions > Manage Extensions, Click on "Load unpacked" from upper-left corner and select the dist folder.
+    iv.     iv. Open Chrome, go to Extensions > Manage Extensions, and make sure to toggle on Developer mode in the upper-right corner. Then, click on "Load unpacked" from the upper-left corner and select the dist folder.
 
     v. The  "ContentSpock" extension will be loaded inside your chrome extensions list and is ready to use. 
 
