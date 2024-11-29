@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import VideoUploader from "../uploader/VideoUploader";
+import config from "../../../public/config.json";
 import "./styles.css";
 
 const labelOptions = ["Marketplace App", "Launch", "Automate"];
@@ -16,7 +17,7 @@ function ChatArea() {
   const videoFeedbackCall = async (formData: any) => {
     try {
       //   setLoading(20);
-      fetch("http://localhost:3000/feedback/visual?userId=user123", {
+      fetch(`${config.BACKEND_API_URL}/feedback/visual?userId=user123`, {
         method: "POST",
         body: formData,
       })
@@ -41,7 +42,7 @@ function ChatArea() {
   const audioFeedbackCall = async (formData: any) => {
     try {
       //   setLoading(20);
-      fetch("http://localhost:3000/feedback/audio?userId=user123", {
+      fetch(`${config.BACKEND_API_URL}/feedback/audio?userId=user123`, {
         method: "POST",
         body: formData,
       })

@@ -52,6 +52,8 @@ ContentSpock harnesses advanced AI to transform the support experience by automa
 
          npm install
 
+    NOTE: If you want to use your backend URL, go to `public/config.json` and change the `BACKEND_API_URL` to your desired URL.
+
     iii. Run the following command to create frontend build:
 
          npm run build

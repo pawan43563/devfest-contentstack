@@ -1,7 +1,8 @@
 import utils from "../utils";
+import config from "../../public/config.json";
 
 const videoFeedbackCall = async (formData: any) =>
-  fetch("http://localhost:3000/feedback/visual?userId=user123", {
+  fetch(`${config.BACKEND_API_URL}/feedback/visual?userId=user123`, {
     method: "POST",
     body: formData,
   })
@@ -24,7 +25,7 @@ const videoFeedbackCall = async (formData: any) =>
     });
 
 const audioFeedbackCall = async (formData: any) =>
-  fetch("http://localhost:3000/feedback/audio?userId=user123", {
+  fetch(`${config.BACKEND_API_URL}/feedback/audio?userId=user123`, {
     method: "POST",
     body: formData,
   })
@@ -115,7 +116,7 @@ const resolutionChecker = (data) => {
 };
 
 const getResolutionCall = async (label: any) =>
-  fetch("http://localhost:3000/feedback/chat?userId=user123", {
+  fetch(`${config.BACKEND_API_URL}/feedback/chat?userId=user123`, {
     method: "POST",
     body: JSON.stringify({
       issueLabel: label,
@@ -137,7 +138,7 @@ const getResolutionCall = async (label: any) =>
 
 const getTicketSummary = async (userId) => {
   return fetch(
-    `http://localhost:3000/jira/get-ticket-summary?userId=${userId}`,
+    `${config.BACKEND_API_URL}/jira/get-ticket-summary?userId=${userId}`,
     {
       method: "GET",
     }
@@ -157,7 +158,7 @@ const getTicketSummary = async (userId) => {
 };
 
 const createTicket = async (ticketDetails, userId) => {
-  return fetch(`http://localhost:3000/jira/create-ticket?userId=${userId}`, {
+  return fetch(`${config.BACKEND_API_URL}/jira/create-ticket?userId=${userId}`, {
     method: "POST",
     body: JSON.stringify(ticketDetails),
   })

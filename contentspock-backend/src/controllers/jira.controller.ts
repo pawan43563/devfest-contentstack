@@ -103,9 +103,7 @@ export class JiraController {
     @Body() comment: any,
   ):  Promise<any> {
     try {
-      console.info("comment", comment);
       const response: any = await this.jiraService.addCommentToTicket(ticketId, comment);
-      console.log("Response", response);
       return {
         message: "Added successfully"
       }

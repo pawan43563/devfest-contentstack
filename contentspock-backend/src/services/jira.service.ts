@@ -122,7 +122,6 @@ export class JiraService {
           'Content-Type': 'application/json',
         },
       });
-      console.log('response', response);
       return response.body;
     } catch (error) {
       console.log('error', error.response?.statusText);
