@@ -192,6 +192,5 @@ Q. What is the significance of the 'Version' property?
 A. The version property indicates the version of the app, incrementing automatically upon updates.
 
 Q. Can I use the App Manifest to control the app’s visibility in the Contentstack Marketplace?
-A. Yes, the visibility property controls whether the app is listed in the Contentstack Marketplace or not, based on whether it is set to public, private, or public unlisted.**Question:** What could be causing the issue where no products are displayed on the product selector page in the SAP Commerce Cloud Marketplace application?
+A. Yes, the visibility property controls whether the app is listed in the Contentstack Marketplace or not, based on whether it is set to public, private, or public unlisted.
 
-**Answer:** The issue might be due to the user not having the necessary permissions to view the products on the selector page.

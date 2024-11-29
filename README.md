@@ -36,7 +36,7 @@ ContentSpock harnesses advanced AI to transform the support experience by automa
 
          npm run build
    
-         npm run start:dev
+         npm run start
 
     v. The server will start running on port 3000
 
