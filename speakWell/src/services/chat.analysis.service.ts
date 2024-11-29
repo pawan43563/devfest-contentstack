@@ -47,6 +47,7 @@ export class ChatAnalysisService {
     const matchingFile = files.find((file) =>
       file.includes(toLowercaseAndRemoveSpaces(body.issueLabel)),
     );
+    console.log("ma", matchingFile);
     if (matchingFile) {
       const filePath = path.join(folderPath, matchingFile);
       KBResponse = readFileSync(filePath, 'utf-8');
@@ -55,7 +56,7 @@ export class ChatAnalysisService {
       // add the source from documentation link
       KBResponse = await this.analyzeWithGPT35(KBResponse, body.summary);
     }
-    console.info("kb", KBResponse)
+    console.log("kb", KBResponse);
     const summary = extractSummary(fileData?.audioFeedback);
     // use the data as a context in chatgpt
     const analysisResponse = await this.analyzeWithGPT35(summary, KBResponse);

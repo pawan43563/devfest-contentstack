@@ -28,7 +28,6 @@ export function useChat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log("Preview Data", previewData, isCreateTicket);
     const fn = async () => {
       if (isCreateTicket) {
         const res: any = await services.createTicket(previewData, "user123");

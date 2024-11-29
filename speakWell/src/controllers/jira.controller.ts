@@ -137,8 +137,13 @@ export class JiraController {
 
     try {
       const ticketDetails = await this.jiraService.getTicketDetails(issueKey);
-      const ticketDesciption =  ticketDetails?.fields?.issuetype?.description;
-      const ticketComments =  ticketDetails?.fields?.comment?.comments?.join("|"); 
+      const ticketDesciption =  ticketDetails?.fields?.description;
+      const ticketCommentsArr = []; 
+
+      ticketDetails?.fields?.comment?.comments?.forEach((cmt) => {
+        ticketCommentsArr?.push(cmt?.body);
+      })
+      const ticketComments = ticketCommentsArr?.join("");
 
       const messages = [
         {
